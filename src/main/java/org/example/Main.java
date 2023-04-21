@@ -37,23 +37,21 @@ public class Main {
             String url = reader.readLine();
 
             System.out.println("Enter the search depth:");
-            String depth = reader.readLine();
+            String depthText = reader.readLine();
+            int depth = Integer.parseInt(depthText);
 
             System.out.println("Enter the language:");
             String languageCode = reader.readLine();
 
-            Connection connection = Jsoup.connect(url);
-            Document document = connection.execute().parse();
+            System.out.println("Crawling started!");
 
-            List<Element> links = document.getElementsByTag("a");
+            WebCrawler crawler = new WebCrawler(url, depth);
+            crawler.crawl();
 
-            for (Element link : links) {
-                String linkTo = link.attr("href");
-                String linkText = link.text();
-
-                System.out.println("linkText:" + linkText);
-            }
+            System.out.println("Crawling done!");
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
