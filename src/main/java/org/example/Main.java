@@ -19,6 +19,16 @@ public class Main {
                 new InputStreamReader(System.in));
 
         try {
+            //Aufgaben:
+            //1. Output / Input für URL / depth / language
+            //2. Suche mit jsoup (Rekursiv bis depth limit)
+            //3. Ergebnisse in irgendeiner Form zwischen speichern
+            //4. Ergebnisse übersetzen mit API
+            //5. Übersetzung in .md Format speichern
+            //6. Unit Tests schreiben
+            //7. ???
+            //8. Profit
+
             String url = reader.readLine();
 
             System.out.println("Enter the search depth:");
