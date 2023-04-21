@@ -12,7 +12,7 @@ public class HttpRequestCreatorTest {
     HttpRequestCreator httpRequestCreator;
     @BeforeEach
     public void setup(){
-        httpRequestCreator = HttpRequestCreator.gethttpRequestCreator();
+        httpRequestCreator = HttpRequestCreator.getHttpRequestCreator();
     }
 
     @AfterEach
