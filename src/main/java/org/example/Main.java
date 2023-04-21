@@ -29,6 +29,11 @@ public class Main {
             //7. ???
             //8. Profit
 
+            //Klassen:
+            //Formatter
+            //Suche
+            //Übersetzung
+
             String url = reader.readLine();
 
             System.out.println("Enter the search depth:");
