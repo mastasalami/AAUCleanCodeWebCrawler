@@ -4,6 +4,8 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 
 public class HttpRequestCreator {
+
+    private static HttpRequestCreator instance;
     private final String URI_TRANSLATE = "https://google-translator9.p.rapidapi.com/v2";
     private final String URI_DETECT = "https://google-translator9.p.rapidapi.com/v2/detect";
     private final String HEADER_CONTENT_NAME = "content-type";
@@ -18,6 +20,16 @@ public class HttpRequestCreator {
         DETECTLANGUAGE,
         TRANSLATE
     }
+
+
+    public static HttpRequestCreator gethttpRequestCreator() {
+        if (instance == null) {
+            instance = new HttpRequestCreator();
+        }
+
+        return instance;
+    }
+
 
     public HttpRequest buildDetectLanguageHttpRequest(String headerSample) {
         HttpRequest.Builder requestBuild = buildHttpRequest(HttpRequestType.DETECTLANGUAGE);
