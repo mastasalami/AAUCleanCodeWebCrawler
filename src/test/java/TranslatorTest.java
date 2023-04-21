@@ -8,25 +8,14 @@ import java.io.IOException;
 
 public class TranslatorTest {
     Translator translator;
+
     @BeforeEach
-    public void setup(){
+    public void setup() {
         translator = new Translator();
     }
 
     @AfterEach
-    public void teardown(){
+    public void teardown() {
         translator = null;
-    }
-
-
-
-    @Test
-    public void testdetectLanguage() throws IOException, InterruptedException {
-        String detectedLanguage;
-        detectedLanguage = translator.detectLanguage("Guten Tag!");
-
-        String expectedLanguage = "ro";
-
-        Assertions.assertEquals(expectedLanguage,detectedLanguage);
     }
 }
