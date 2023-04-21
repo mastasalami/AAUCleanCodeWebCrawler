@@ -7,7 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Translator {
-    private final String URI = "https://google-translator9.p.rapidapi.com/v2";
+    private final String URI_TRANSLATE = "https://google-translator9.p.rapidapi.com/v2";
     private final String URI_DETECT = "/detect";
     private final String URI_LANGUAGES = "/languages";
     private final String HEADER_CONTENT_NAME = "content-type";
@@ -17,5 +17,18 @@ public class Translator {
     private final String HEADER_APIHOST_NAME = "X-RapidAPI-Host";
     private final String HEADER_APIHOST_VALUE = "google-translator9.p.rapidapi.com";
 
+    
+
+
+
+
+
+
+}
+
+enum HttpRequestType {
+    DETECTLANGUAGE,
+    TRANSLATE,
+    GETLANGUAGES;
 
 }
