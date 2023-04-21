@@ -12,11 +12,6 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
-        System.out.println("Enter the URL you would like to analyse:");
-
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(System.in));
 
         try {
             //Aufgaben:
@@ -34,21 +29,21 @@ public class Main {
             //Suche
             //Übersetzung
 
-            String url = reader.readLine();
+            Console console = new Console();
+            console.writeInitialMessages();
 
-            System.out.println("Enter the search depth:");
-            String depthText = reader.readLine();
-            int depth = Integer.parseInt(depthText);
-
-            System.out.println("Enter the language:");
-            String languageCode = reader.readLine();
-
-            System.out.println("Crawling started!");
+            String  url     = console.readUrlFromConsole();
+            Integer depth   = console.readSearchDepthsFromConsole();
+            String language = console.readTargetLanguageFromConsole();
 
             WebCrawler crawler = new WebCrawler(url, depth);
             crawler.crawl();
 
             System.out.println("Crawling done!");
+
+            String summary = crawler.getSummary();
+            System.out.println("Summary:" + summary);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {

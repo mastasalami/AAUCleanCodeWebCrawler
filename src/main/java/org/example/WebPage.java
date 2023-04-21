@@ -71,4 +71,19 @@ public class WebPage {
             return linkUrl;
         return new String();
     }
+
+    @Override
+    public String toString() {
+        String result = "";
+
+        for (Element heading : headings) {
+            result += "# -->" + heading.text();
+        }
+
+        for (Element heading : links) {
+            result += "<br> -->" + heading.attr("href");
+        }
+        result += "<br>";
+        return result;
+    }
 }

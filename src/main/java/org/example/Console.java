@@ -1,0 +1,36 @@
+package org.example;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Console {
+    BufferedReader reader = new BufferedReader(
+            new InputStreamReader(System.in));
+
+    public void writeInitialMessages() {
+        System.out.println("WebCrawler starting!");
+        System.out.println("You will now be asked to enter the parameter for this run.");
+    }
+
+    public String readUrlFromConsole() throws IOException {
+        System.out.println("Enter the url:");
+        String url = reader.readLine();
+
+        return url;
+    }
+
+    public int readSearchDepthsFromConsole() throws IOException {
+        System.out.println("Enter the search depths:");
+        String searchDepths = reader.readLine();
+
+        return Integer.parseInt(searchDepths);
+    }
+
+    public String readTargetLanguageFromConsole() throws IOException {
+        System.out.println("Enter the target language:");
+        String targetLanguage = reader.readLine();
+
+        return targetLanguage;
+    }
+}

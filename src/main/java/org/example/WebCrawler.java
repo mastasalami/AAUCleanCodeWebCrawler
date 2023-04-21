@@ -25,6 +25,7 @@ public class WebCrawler {
     private void init(String url) throws IOException {
         this.url = url;
         connection = Jsoup.connect(url);
+        connection.timeout(1000);
     }
 
     private Document getDocumentFromConnection() throws IOException {
@@ -39,7 +40,6 @@ public class WebCrawler {
         System.out.println("Crawling url:" + initialUrl);
 
         WebPage initialPage = getWebPageFromConnection();
-
         if (depth < maxDepth) {
             depth++;
             List<String> linkUrls = initialPage.getLinkUrls();
@@ -54,16 +54,29 @@ public class WebCrawler {
         Document document = null;
         try {
             document = getDocumentFromConnection();
-        } catch (IOException e) {
+        } catch (IOException e) {                               //This means the call to get the page failed for some reason (Timeout, NoAccess,...)
             WebPage page = new WebPage(null, this.url);
-            webPages.add(page);
+            addWebPageToList(page);
             return page;
         }
 
         WebPage page = new WebPage(document, this.url);
-        webPages.add(page);
-        visitedUrls.add(this.url);
+        addWebPageToList(page);
 
         return page;
+    }
+
+    private void addWebPageToList(WebPage page) {
+        webPages.add(page);
+        visitedUrls.add(page.getUrl());
+    }
+
+    public String getSummary() {
+        String summary = "";
+        for (WebPage page : webPages) {
+            summary += page.toString();
+        }
+
+        return summary;
     }
 }
