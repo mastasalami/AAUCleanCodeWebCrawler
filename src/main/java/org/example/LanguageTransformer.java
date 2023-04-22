@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LanguageTransformer {
+    private static LanguageTransformer languageTransformer;
     private static final List<String> googleLanguageCodes = Arrays.asList("af", "ak", "am", "ar", "as", "ay", "az", "be", "bg", "bho", "bm", "bn", "bs", "ca",
                 "ceb", "ckb", "co", "cs", "cy", "da", "de", "doi", "dv", "ee", "el", "en", "eo", "es", "et", "eu", "fa",
                 "fi", "fr", "fy", "ga", "gd", "gl", "gn", "gom", "gu", "ha", "haw", "he", "hi", "hmn", "hr", "ht", "hu", "hy",
@@ -28,5 +29,15 @@ public class LanguageTransformer {
 
 
     private static HashMap<String,String> googleLanguagesAndCodes;
-    
+    private LanguageTransformer(){
+
+    }
+
+    public static LanguageTransformer getLanguageTransformer(){
+        if(languageTransformer == null){
+            languageTransformer = new LanguageTransformer();
+        }
+        return languageTransformer;
+    }
+
 }
