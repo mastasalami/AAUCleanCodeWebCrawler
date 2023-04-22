@@ -18,13 +18,13 @@ public class LanguageTransformer {
             "bulgarian","bhojpuri","bambara","bengali","bosnian","catalan","cebuano","kurdish(sorani)","corsican", "czech", "welsh",
             "danish", "german", "dogri", "dhivehi", "ewe", "greek", "english", "esperanto", "spanish", "estonian", "basque", "persian",
             "finnish", "french", "frisian", "irish", "scots gaelic", "galician", "guarani", "konkani", "gujarati", "hausa", "hawaiian",
-            "hebrew", "hindi", "hmong", "croation", "haitian creole", "hungarian", "armenian", "indonesian", "igbo", "ilocano", "icelandic",
-            "ilocano", "icelandic", "italian", "japanese", "georgian", "kazakh", "khmer", "kannada", "korean", "krio", "kurdish", "kyrgyz",
+            "hebrew", "hindi", "hmong", "croation", "haitian creole", "hungarian", "armenian", "indonesian", "igbo", "ilocano",
+            "icelandic", "italian", "japanese", "javanese", "georgian", "kazakh", "khmer", "kannada", "korean", "krio", "kurdish", "kyrgyz",
             "latin", "luxembourgish", "luganda", "lingala", "lao", "lithuanian", "mizo", "latvian", "maithili", "malagasy", "maori", "macedonian",
             "malayalam", "mongolian", "manipuri", "marathi", "malay", "maltese", "burmese", "nepali", "dutch", "norwegian", "sepedi", "chichewa",
             "oromo", "ordia", "punjabi", "polish", "pashto", "portuguese", "quechua", "romanian", "russian", "kinyarwanda", "sanskrit", "sindhi",
             "sinhala", "slovak", "slovenian", "somoan", "shona", "somali", "albanian", "serbian", "sesotho", "sundanese", "swedish", "swahili",
-            "tamil", "telugu", "tajik", "thai", "tigrinya", "turkmen", "tagalog", "turkish", "tsonga", "tatar", "uyghur", "urdu", "uzbek",
+            "tamil", "telugu", "tajik", "thai", "tigrinya", "turkmen", "tagalog", "turkish", "tsonga", "tatar", "uyghur", "ukrainian", "urdu", "uzbek",
             "vietnamese", "xhosa", "yiddish", "yoruba", "chinese (simplified)", "chinese (traditional)", "zulu");
 
 
@@ -57,7 +57,7 @@ public class LanguageTransformer {
     public String getLanguageCode(String language){
         if(!isGoogleLanguage(language)) return null;
         String languageCode = googleLanguagesAndCodes.get(language);
-        return language;
+        return languageCode;
     }
 
 }
