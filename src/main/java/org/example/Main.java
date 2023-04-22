@@ -41,7 +41,13 @@ public class Main {
 
             System.out.println("Crawling done!");
 
-            String summary = crawler.getSummary();
+            String headingsText = crawler.getHeadingsText();
+            String linkTexts = crawler.getLinksText();
+
+            String summary = headingsText + linkTexts;
+
+            SummaryCreator summaryCreator = new SummaryCreator(summary);
+            summaryCreator.createSummaryFile();
             System.out.println("Summary:" + summary);
 
         } catch (IOException e) {

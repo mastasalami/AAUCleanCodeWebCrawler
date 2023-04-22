@@ -11,16 +11,25 @@ public class WebPage {
     private static final int    HEADING_MAX_LEVEL                   = 6;
     private static final String LINK_HTML_ELEMENT_NAME              = "a";
     private static final String HEADING_HTML_ELEMENT_NAME           = "h";
-    private static final String RELATIVE_LINK_TO_SAME_PAGE_SYMBOL   = "/";
+    private static final String LINE_BREAK_SYMBOL                   = "\n";
+    private static final String LINK_ATTRIBUTE                      = "href";
+    private static final String EXTERNAL_WEBSITE_INDICATOR          = "http";
+
+    private static final String WORKING_LINK_TEXT                   = "link to";
+    private static final String BROKEN_LINK_TEXT                    = "broken link";
+    private static final String OPEN_LINK_TAG                       = "<a>";
+    private static final String CLOSE_LINK_TAG                      = "</a>";
 
     private Document document;
     private List<Element> links     = new ArrayList<>();
     private List<Element> headings  = new ArrayList<>();
     private String url;
+    private int depth;
 
-    public WebPage(Document document, String url) throws Exception {
+    public WebPage(Document document, String url, int depth) throws Exception {
         this.document = document;
         this.url = url;
+        this.depth = depth;
 
         if (this.document != null)
             getElementsFromDocument();
@@ -65,25 +74,95 @@ public class WebPage {
     }
 
     private String getExternalLinkUrlFromElement(Element element) {
-        String linkUrl = element.attr("href");
+        String linkUrl = element.attr(LINK_ATTRIBUTE);
 
-        if (linkUrl.startsWith("http") && !linkUrl.contains(this.url))
+        if (linkUrl.startsWith(EXTERNAL_WEBSITE_INDICATOR) && !linkUrl.contains(this.url))
             return linkUrl;
         return new String();
     }
 
-    @Override
-    public String toString() {
-        String result = "";
+    public String getHeadingsToText() {
+        String headingsText = "";
 
         for (Element heading : headings) {
-            result += "# -->" + heading.text();
+            headingsText += getElementText(heading);
         }
+        headingsText += LINE_BREAK_SYMBOL + LINE_BREAK_SYMBOL;
 
-        for (Element heading : links) {
-            result += "<br> -->" + heading.attr("href");
+        return headingsText;
+    }
+
+    public String getLinkText() {
+        if (document == null)
+            return getLinkText(true);
+        else
+            return getLinkText(false);
+    }
+
+    private String getLinkText(boolean isBrokenLink) {
+        String linkText = getIndentationForDepth();
+        if (isBrokenLink)
+            linkText += BROKEN_LINK_TEXT;
+        else
+            linkText += WORKING_LINK_TEXT;
+
+        linkText += " " + OPEN_LINK_TAG;
+        linkText += this.url;
+        linkText += CLOSE_LINK_TAG;
+        linkText += LINE_BREAK_SYMBOL;
+
+        return linkText;
+    }
+
+    public String getElementText(Element el) {
+        String elementText = "";
+
+        if (el.nodeName().contains(HEADING_HTML_ELEMENT_NAME))
+            elementText += getIndentationForHeadingLevel(el);
+
+        elementText += getIndentationForDepth();
+
+        if (el.nodeName().contains(HEADING_HTML_ELEMENT_NAME))
+            elementText += el.text();
+        else
+            elementText += el.attr(LINK_ATTRIBUTE);
+
+        elementText += LINE_BREAK_SYMBOL;
+
+        return elementText;
+    }
+
+    private String getIndentationForDepth() {
+        String indentationString = "";
+
+        for (int i = 0; i < depth; i++)
+            indentationString += "--";
+
+        if (!indentationString.isEmpty())
+            indentationString += "> ";
+
+        return indentationString;
+    }
+
+    private String getIndentationForHeadingLevel(Element el) {
+        String indentationString = "";
+
+        for (int i = 0; i < getHeadingLevel(el)+1; i++)
+            indentationString += "#";
+
+        if (!indentationString.isEmpty())
+            indentationString += " ";
+
+        return indentationString;
+    }
+
+    private int getHeadingLevel(Element headingElement) {
+        String elementName = headingElement.nodeName();
+        int headingLevel = 0;
+        if (elementName.contains(HEADING_HTML_ELEMENT_NAME)) {
+            String elementLevelText = elementName.replace(HEADING_HTML_ELEMENT_NAME, "");
+            headingLevel = Integer.parseInt(elementLevelText);
         }
-        result += "<br>";
-        return result;
+        return headingLevel;
     }
 }

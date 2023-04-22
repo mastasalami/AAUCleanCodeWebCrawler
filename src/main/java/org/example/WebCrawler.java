@@ -38,7 +38,7 @@ public class WebCrawler {
         init(initialUrl);
         System.out.println("Crawling url:" + initialUrl);
 
-        WebPage initialPage = getWebPageFromConnection();
+        WebPage initialPage = getWebPageFromConnection(depth);
         if (depth < maxDepth) {
             depth++;
             List<String> linkUrls = initialPage.getLinkUrls();
@@ -49,17 +49,17 @@ public class WebCrawler {
         }
     }
 
-    private WebPage getWebPageFromConnection() throws Exception {
+    private WebPage getWebPageFromConnection(int depth) throws Exception {
         Document document = null;
         try {
             document = getDocumentFromConnection();
         } catch (IOException e) {                               //This means the call to get the page failed for some reason (Timeout, NoAccess,...)
-            WebPage page = new WebPage(null, this.url);
+            WebPage page = new WebPage(null, this.url, depth);
             addWebPageToList(page);
             return page;
         }
 
-        WebPage page = new WebPage(document, this.url);
+        WebPage page = new WebPage(document, this.url, depth);
         addWebPageToList(page);
 
         return page;
@@ -70,12 +70,21 @@ public class WebCrawler {
         visitedUrls.add(page.getUrl());
     }
 
-    public String getSummary() {
-        String summary = "";
+    public String getHeadingsText() {
+        String headingsText = "";
         for (WebPage page : webPages) {
-            summary += page.toString();
+            headingsText += page.getHeadingsToText();
         }
 
-        return summary;
+        return headingsText;
+    }
+
+    public String getLinksText() {
+        String headingsText = "";
+        for (WebPage page : webPages) {
+            headingsText += page.getLinkText();
+        }
+
+        return headingsText;
     }
 }
