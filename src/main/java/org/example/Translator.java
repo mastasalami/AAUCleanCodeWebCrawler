@@ -12,5 +12,19 @@ public class Translator {
     private String targetLanguage;
     private HttpRequestCreator httpRequestCreator;
 
+    public String getSourceLanguage() {
+        return sourceLanguage;
+    }
 
+    public String getTargetLanguage() {
+        return targetLanguage;
+    }
+
+    public void setSourceLanguage(String sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
+    }
+
+    public void setTargetLanguage(String targetLanguage) {
+        this.targetLanguage = targetLanguage;
+    }
 }
