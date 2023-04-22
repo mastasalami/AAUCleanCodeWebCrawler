@@ -29,7 +29,7 @@ public class Main {
             //Suche
             //Übersetzung
 
-            Console console = new Console();
+            ConsoleReader console = new ConsoleReader();
             console.writeInitialMessages();
 
             String  url     = console.readUrlFromConsole();

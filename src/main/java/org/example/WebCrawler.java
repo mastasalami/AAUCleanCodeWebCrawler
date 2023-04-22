@@ -25,7 +25,6 @@ public class WebCrawler {
     private void init(String url) throws IOException {
         this.url = url;
         connection = Jsoup.connect(url);
-        connection.timeout(1000);
     }
 
     private Document getDocumentFromConnection() throws IOException {
