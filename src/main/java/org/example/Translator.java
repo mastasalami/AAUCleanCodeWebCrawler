@@ -10,7 +10,11 @@ import java.net.http.HttpResponse;
 public class Translator {
     private String sourceLanguage;
     private String targetLanguage;
-    private HttpRequestCreator httpRequestCreator;
+    private final HttpRequestCreator httpRequestCreator;
+
+    public Translator() {
+        httpRequestCreator = HttpRequestCreator.getHttpRequestCreator();
+    }
 
     public String getSourceLanguage() {
         return sourceLanguage;
