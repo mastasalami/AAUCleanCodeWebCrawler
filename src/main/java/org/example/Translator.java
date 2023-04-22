@@ -8,4 +8,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Translator {
+    private String sourceLanguage;
+    private String targetLanguage;
+    private HttpRequestCreator httpRequestCreator;
+
+
 }
