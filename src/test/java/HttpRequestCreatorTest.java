@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.URI;
 import java.util.List;
@@ -27,8 +28,8 @@ public class HttpRequestCreatorTest {
 
         HttpRequest translateRequestNormal = normalHttpRequestCreationTranslate();
 
-        String normalHeaders = translateRequestNormal.headers().toString().substring(34);
-        String createHeaders = translateRequestCreator.headers().toString().substring(34);
+        String normalHeaders = transformHeaders(translateRequestNormal.headers());
+        String createHeaders = transformHeaders(translateRequestCreator.headers());
 
 
         Assertions.assertEquals(translateRequestNormal.method(),translateRequestCreator.method());
@@ -44,8 +45,8 @@ public class HttpRequestCreatorTest {
 
         HttpRequest detectRequestNormal = normalHttpRequestCreationDetect();
 
-        String normalHeaders = detectRequestNormal.headers().toString().substring(34);
-        String createHeaders = detectRequestCreator.headers().toString().substring(34);
+        String normalHeaders = transformHeaders(detectRequestNormal.headers());
+        String createHeaders = transformHeaders(detectRequestCreator.headers());
 
 
         Assertions.assertEquals(detectRequestNormal.method(),detectRequestCreator.method());
@@ -83,6 +84,12 @@ public class HttpRequestCreatorTest {
                         "}"))
             .build();
         return detectRequest;
+    }
+
+    private String transformHeaders(HttpHeaders headers){
+        String headersToString = headers.toString();
+        String transformedHeaders = headersToString.substring(34);
+        return transformedHeaders;
     }
 
 
