@@ -11,9 +11,11 @@ public class Translator {
     private String sourceLanguage;
     private String targetLanguage;
     private final HttpRequestCreator httpRequestCreator;
+    private final LanguageTransformer languageTransformer;
 
     public Translator() {
         httpRequestCreator = HttpRequestCreator.getHttpRequestCreator();
+        languageTransformer = LanguageTransformer.getLanguageTransformer();
     }
 
     public String getSourceLanguage() {
