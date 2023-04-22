@@ -55,8 +55,9 @@ public class LanguageTransformer {
     }
 
     public String getLanguageCode(String language){
-        if(!isGoogleLanguage(language)) return null;
-        String languageCode = googleLanguagesAndCodes.get(language);
+        String lowerCase = language.toLowerCase();
+        if(!isGoogleLanguage(lowerCase)) return null;
+        String languageCode = googleLanguagesAndCodes.get(lowerCase);
         return languageCode;
     }
 

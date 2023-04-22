@@ -30,6 +30,14 @@ public class LanguageTransformerTest {
         Assertions.assertEquals(expectedLanguageCode,gottenLanguageCode);
     }
 
+    @ParameterizedTest
+    @MethodSource("languagesAndCodes")
+    public void getLanguageCodesForLanguagesUppercaseInput(String language, String expectedLanguageCode){
+        String gottenLanguageCode = languageTransformer.getLanguageCode(language.toUpperCase());
+        Assertions.assertEquals(expectedLanguageCode,gottenLanguageCode);
+    }
+
+
     private static Stream<Arguments> languagesAndCodes(){
         return Stream.of(
                 Arguments.of("german","de"),
