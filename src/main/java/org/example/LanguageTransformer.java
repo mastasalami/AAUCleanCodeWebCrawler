@@ -53,6 +53,11 @@ public class LanguageTransformer {
         String possibleLanguageCode = googleLanguagesAndCodes.get(language);
         return possibleLanguageCode != null;
     }
-    
+
+    public String getLanguageCode(String language){
+        if(!isGoogleLanguage(language)) return null;
+        String languageCode = googleLanguagesAndCodes.get(language);
+        return language;
+    }
 
 }
