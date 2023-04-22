@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class LanguageTransformer {
@@ -26,7 +27,6 @@ public class LanguageTransformer {
             "vietnamese", "xhosa", "yiddish", "yoruba", "chinese (simplified)", "chinese (traditional)", "zulu");
 
 
-
-
-
+    private static HashMap<String,String> googleLanguagesAndCodes;
+    
 }
