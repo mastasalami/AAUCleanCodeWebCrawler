@@ -58,13 +58,12 @@ public class HttpRequestCreator {
     private HttpRequest.Builder buildHttpRequest(HttpRequestType requestType) {
         HttpRequest.Builder requestBuild = HttpRequest.newBuilder();
         if (requestType == HttpRequestType.DETECTLANGUAGE) {
-            requestBuild.uri(URI.create(URI_DETECT))
-                    .header(HEADER_CONTENT_NAME, HEADER_CONTENT_VALUE);
+            requestBuild.uri(URI.create(URI_DETECT));
         } else {
-            requestBuild.uri(URI.create(URI_TRANSLATE))
-                    .header(HEADER_CONTENT_NAME, HEADER_CONTENT_VALUE);
+            requestBuild.uri(URI.create(URI_TRANSLATE));
         }
-        requestBuild.header(HEADER_APIKEY_NAME, HEADER_APIKEY_VALUE)
+        requestBuild.header(HEADER_CONTENT_NAME, HEADER_CONTENT_VALUE)
+                .header(HEADER_APIKEY_NAME, HEADER_APIKEY_VALUE)
                 .header(HEADER_APIHOST_NAME, HEADER_APIHOST_VALUE);
         return requestBuild;
     }
