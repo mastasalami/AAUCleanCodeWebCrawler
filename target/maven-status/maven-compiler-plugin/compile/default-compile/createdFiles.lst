@@ -1,0 +1,4 @@
+org\example\Translator.class
+org\example\HttpRequestCreator.class
+org\example\HttpRequestCreator$HttpRequestType.class
+org\example\Main.class

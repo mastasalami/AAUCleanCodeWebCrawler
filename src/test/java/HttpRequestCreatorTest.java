@@ -37,6 +37,24 @@ public class HttpRequestCreatorTest {
 
     }
 
+    @Test
+    public void createOneDetectRequest(){
+        HttpRequest detectRequestCreator;
+        detectRequestCreator = httpRequestCreator.buildDetectLanguageHttpRequest("Guten Tag!");
+
+        HttpRequest detectRequestNormal = normalHttpRequestCreationDetect();
+
+        String normalHeaders = detectRequestNormal.headers().toString().substring(34);
+        String createHeaders = detectRequestCreator.headers().toString().substring(34);
+
+
+        Assertions.assertEquals(detectRequestNormal.method(),detectRequestCreator.method());
+        Assertions.assertEquals(detectRequestNormal.uri(),detectRequestCreator.uri());
+        Assertions.assertEquals(normalHeaders, createHeaders);
+
+    }
+
+
     private HttpRequest normalHttpRequestCreationTranslate(){
         HttpRequest translateRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://google-translator9.p.rapidapi.com/v2"))
@@ -52,6 +70,19 @@ public class HttpRequestCreatorTest {
                 .build();
 
         return translateRequest;
+    }
+
+    private HttpRequest normalHttpRequestCreationDetect(){
+        HttpRequest detectRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://google-translator9.p.rapidapi.com/v2/detect"))
+                .header("content-type", "application/json")
+                .header("X-RapidAPI-Key", "1f5de7c1b6mshc346a13cd58af05p1a5df0jsne027c8bfa2cc")
+                .header("X-RapidAPI-Host", "google-translator9.p.rapidapi.com")
+                .method("POST", HttpRequest.BodyPublishers.ofString("{\r\"" +
+                        "q\": \"Guten Tag!\"\r" +
+                        "}"))
+            .build();
+        return detectRequest;
     }
 
 
