@@ -36,8 +36,17 @@ public class LanguageTransformer {
     public static LanguageTransformer getLanguageTransformer(){
         if(languageTransformer == null){
             languageTransformer = new LanguageTransformer();
+            initializeHashmap();
         }
         return languageTransformer;
+    }
+    private static void initializeHashmap(){
+        googleLanguagesAndCodes = new HashMap<>();
+        for (int i = 0; i < googleLanguages.size(); i++) {
+            String language = googleLanguages.get(i);
+            String languageCode = googleLanguageCodes.get(i);
+            googleLanguagesAndCodes.put(language,languageCode);
+        }
     }
 
 }
