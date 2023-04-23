@@ -53,7 +53,12 @@ public class LanguageTransformer {
         return googleLanguagesAndCodes.containsKey(language);
     }
 
+    private boolean isGoogleLanguageCode(String language){
+        return googleLanguagesAndCodes.containsValue(language);
+    }
+
     public String getLanguageCode(String language){
+        
         String lowerCase = language.toLowerCase();
         if(!isGoogleLanguage(lowerCase)) return null;
         String languageCode = googleLanguagesAndCodes.get(lowerCase);
