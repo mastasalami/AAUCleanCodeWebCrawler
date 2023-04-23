@@ -78,7 +78,7 @@ public class Translator {
 
     private JSONArray extractJsonArrayFromHttpResponse(HttpResponse<String> response){
         String responseBody = response.body();
-        int jsonArrayStartIndex = responseBody.indexOf('[');
+        int jsonArrayStartIndex = responseBody.lastIndexOf('[');
         String extracted = responseBody.substring(jsonArrayStartIndex);
         return new JSONArray(extracted);
     }
