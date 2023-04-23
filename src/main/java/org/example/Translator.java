@@ -11,6 +11,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Translator {
+    private final static String JSONOBJECT_DETECTED_KEY = "language";
+    private final static String JSONOBJECT_TRANSLATED_KEY = "translatedText";
     private String sourceLanguage;
     private String targetLanguage;
     private final HttpRequestCreator httpRequestCreator;
