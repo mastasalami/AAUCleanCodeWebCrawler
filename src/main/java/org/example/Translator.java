@@ -24,7 +24,8 @@ public class Translator {
     }
     public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
         setTargetLanguage(targetLanguage);
-       this.sourceLanguage = detectSourceLanguage(toTranslate);
+       String detectLanguage = detectSourceLanguage(toTranslate);
+       setSourceLanguage(detectLanguage);
 
         HttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate,this.sourceLanguage,this.targetLanguage);
         HttpResponse<String> translateResponse = sendHttpRequest(translateRequest);
@@ -36,6 +37,9 @@ public class Translator {
     private void setTargetLanguage(String targetLanguage){
         String languageCode = languageTransformer.getLanguageCode(targetLanguage);
         this.targetLanguage = languageCode;
+    }
+    private void setSourceLanguage(String sourceLanguage){
+        this.sourceLanguage = sourceLanguage;
     }
     private String detectSourceLanguage(String toTranslate) throws IOException, InterruptedException {
         HttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(toTranslate);
