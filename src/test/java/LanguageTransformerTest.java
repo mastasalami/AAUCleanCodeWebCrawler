@@ -37,6 +37,13 @@ public class LanguageTransformerTest {
         Assertions.assertEquals(expectedLanguageCode,gottenLanguageCode);
     }
 
+    @ParameterizedTest
+    @MethodSource("justCodes")
+    public void getLanguageCodesForLanguageCodeInput(String expectedLanguageCode){
+        String gottenLanguageCode = languageTransformer.getLanguageCode(expectedLanguageCode);
+        Assertions.assertEquals(expectedLanguageCode,gottenLanguageCode);
+    }
+
 
     private static Stream<Arguments> languagesAndCodes(){
         return Stream.of(
@@ -45,6 +52,16 @@ public class LanguageTransformerTest {
                 Arguments.of("afrikaans","af"),
                 Arguments.of("zulu","zu"),
                 Arguments.of("english","en")
+        );
+    }
+
+    private static Stream<Arguments> justCodes(){
+        return Stream.of(
+                Arguments.of("de"),
+                Arguments.of("nl"),
+                Arguments.of("af"),
+                Arguments.of("zu"),
+                Arguments.of("en")
         );
     }
 }
