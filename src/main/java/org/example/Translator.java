@@ -1,5 +1,8 @@
 package org.example;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -33,10 +36,16 @@ public class Translator {
     public void setTargetLanguage(String targetLanguage) {
         this.targetLanguage = targetLanguage;
     }
-    
     private HttpResponse<String> sendHttpRequest(HttpRequest request) throws IOException, InterruptedException {
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         return response;
+    }
+    
+    private JSONArray extractJsonArrayFromHttpResponse(HttpResponse<String> response){
+        String responseBody = response.body();
+        int jsonArrayStartIndex = responseBody.indexOf('[');
+        String extracted = responseBody.substring(jsonArrayStartIndex);
+        return new JSONArray(extracted);
     }
 
 
