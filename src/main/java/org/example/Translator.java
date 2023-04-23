@@ -24,13 +24,9 @@ public class Translator {
     }
     public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
         setTargetLanguage(targetLanguage);
-       String detectLanguage = detectSourceLanguage(toTranslate);
-       setSourceLanguage(detectLanguage);
-
-        HttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate,this.sourceLanguage,this.targetLanguage);
-        HttpResponse<String> translateResponse = sendHttpRequest(translateRequest);
-        String translatedText = parseHttpResponse(translateResponse,JSONOBJECT_TRANSLATED_KEY);
-
+        String detectedLanguage = detectSourceLanguage(toTranslate);
+        setSourceLanguage(detectedLanguage);
+        String translatedText = doTranslation(toTranslate);
         return translatedText;
     }
 
@@ -47,6 +43,15 @@ public class Translator {
         String detectedLanguage = parseHttpResponse(detectResponse,JSONOBJECT_DETECTED_KEY);
         return detectedLanguage;
     }
+
+    private String doTranslation(String toTranslate) throws IOException, InterruptedException {
+        HttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate,this.sourceLanguage,this.targetLanguage);
+        HttpResponse<String> translateResponse = sendHttpRequest(translateRequest);
+        String translatedText = parseHttpResponse(translateResponse,JSONOBJECT_TRANSLATED_KEY);
+        return translatedText;
+    }
+
+
     private HttpResponse<String> sendHttpRequest(HttpRequest request) throws IOException, InterruptedException {
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         return response;
