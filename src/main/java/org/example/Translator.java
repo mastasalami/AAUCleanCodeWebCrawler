@@ -40,7 +40,20 @@ public class Translator {
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         return response;
     }
-    
+
+    private String parseHttpResponse(HttpResponse<String> response, String jsonObjectKey){
+        JSONArray responseJson = extractJsonArrayFromHttpResponse(response);
+        StringBuilder parsedResponse = new StringBuilder();
+
+        for (int i = 0; i < responseJson.length(); i++) {
+            JSONObject responseObject = responseJson.getJSONObject(i);
+            String parsed = responseObject.getString(jsonObjectKey);
+            parsedResponse.append(parsed);
+        }
+        String parsedString = parsedResponse.toString();
+        return parsedString;
+    }
+
     private JSONArray extractJsonArrayFromHttpResponse(HttpResponse<String> response){
         String responseBody = response.body();
         int jsonArrayStartIndex = responseBody.indexOf('[');
