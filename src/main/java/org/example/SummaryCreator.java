@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SummaryCreator {
-    private static final String FILE_NAME = "report.md";
+    public static final String FILE_NAME = "report.md";
 
     private String summaryString;
     private File outputFile;
@@ -16,14 +16,13 @@ public class SummaryCreator {
         createOrClearSummaryFile();
     }
 
-    public void createSummaryFile() throws IOException {
+    public void writeSummaryToFile() throws IOException {
         writeContentToSummary(summaryString, true);
     }
 
     private void createOrClearSummaryFile() throws IOException {
         if (!outputFile.createNewFile())
             writeContentToSummary("", false);
-
     }
 
     private void writeContentToSummary(String content, boolean appendContent) throws IOException {

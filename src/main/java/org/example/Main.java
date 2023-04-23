@@ -1,14 +1,6 @@
 package org.example;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -47,7 +39,7 @@ public class Main {
             String summary = headingsText + linkTexts;
 
             SummaryCreator summaryCreator = new SummaryCreator(summary);
-            summaryCreator.createSummaryFile();
+            summaryCreator.writeSummaryToFile();
             System.out.println("Summary:" + summary);
 
         } catch (IOException e) {
