@@ -33,4 +33,6 @@ public class Translator {
     public void setTargetLanguage(String targetLanguage) {
         this.targetLanguage = targetLanguage;
     }
+
+
 }

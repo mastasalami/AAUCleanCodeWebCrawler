@@ -50,8 +50,7 @@ public class LanguageTransformer {
     }
 
     private boolean isGoogleLanguage(String language){
-        String possibleLanguageCode = googleLanguagesAndCodes.get(language);
-        return possibleLanguageCode != null;
+        return googleLanguagesAndCodes.containsKey(language);
     }
 
     public String getLanguageCode(String language){
