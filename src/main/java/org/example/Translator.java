@@ -23,9 +23,7 @@ public class Translator {
         languageTransformer = LanguageTransformer.getLanguageTransformer();
     }
     public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
-        String languageCode = languageTransformer.getLanguageCode(targetLanguage);
-        setTargetLanguage(languageCode);
-
+        setTargetLanguage(targetLanguage);
         HttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(toTranslate);
         HttpResponse<String> detectResponse = sendHttpRequest(detectRequest);
         String detectedLanguage = parseHttpResponse(detectResponse,JSONOBJECT_DETECTED_KEY);
@@ -36,6 +34,11 @@ public class Translator {
         String translatedText = parseHttpResponse(translateResponse,JSONOBJECT_TRANSLATED_KEY);
 
         return translatedText;
+    }
+
+    private void setTargetLanguage(String targetLanguage){
+        String languageCode = languageTransformer.getLanguageCode(targetLanguage);
+        this.targetLanguage = languageCode;
     }
 
 
