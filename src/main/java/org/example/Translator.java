@@ -22,24 +22,6 @@ public class Translator {
         httpRequestCreator = HttpRequestCreator.getHttpRequestCreator();
         languageTransformer = LanguageTransformer.getLanguageTransformer();
     }
-
-    public String getSourceLanguage() {
-        return sourceLanguage;
-    }
-
-    public String getTargetLanguage() {
-        return targetLanguage;
-    }
-
-    public void setSourceLanguage(String sourceLanguage) {
-        this.sourceLanguage = sourceLanguage;
-    }
-
-    public void setTargetLanguage(String targetLanguage) {
-        this.targetLanguage = targetLanguage;
-    }
-
-
     public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
         String languageCode = languageTransformer.getLanguageCode(targetLanguage);
         setTargetLanguage(languageCode);
