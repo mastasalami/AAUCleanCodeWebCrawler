@@ -39,9 +39,11 @@ public class WebPage {
         return url;
     }
 
-    public void getElementsFromDocument() throws Exception {
-        links = getElements(LINK_HTML_ELEMENT_NAME);
-        getHeadings();
+    private void getElementsFromDocument() throws Exception {
+        if (this.document != null) {
+            links = getElements(LINK_HTML_ELEMENT_NAME);
+            getHeadings();
+        }
     }
 
     private void getHeadings() throws Exception {
@@ -81,13 +83,15 @@ public class WebPage {
         return new String();
     }
 
-    public String getHeadingsToText() {
+    public String getHeadingsToString() {
         String headingsText = "";
 
         for (Element heading : headings) {
             headingsText += getElementText(heading);
         }
-        headingsText += LINE_BREAK_SYMBOL + LINE_BREAK_SYMBOL;
+
+        if (!headingsText.isEmpty())
+            headingsText += LINE_BREAK_SYMBOL + LINE_BREAK_SYMBOL;
 
         return headingsText;
     }

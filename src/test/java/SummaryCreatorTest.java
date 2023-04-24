@@ -8,7 +8,7 @@ import java.io.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SummaryCreatorTest {
-    SummaryCreator creator;
+    private SummaryCreator creator;
     private static final String testText = "TEST";
 
     @BeforeEach

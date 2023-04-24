@@ -73,7 +73,7 @@ public class WebCrawler {
     public String getHeadingsText() {
         String headingsText = "";
         for (WebPage page : webPages) {
-            headingsText += page.getHeadingsToText();
+            headingsText += page.getHeadingsToString();
         }
 
         return headingsText;

@@ -2,3 +2,13 @@
 report.md
 target/surefire-reports/SummaryCreatorTest.txt
 target/surefire-reports/TEST-SummaryCreatorTest.xml
+target/surefire-reports/TEST-WebCrawlerTest.xml
+target/surefire-reports/TEST-WebPageTest.xml
+target/surefire-reports/WebCrawlerTest.txt
+target/surefire-reports/WebPageTest.txt
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
