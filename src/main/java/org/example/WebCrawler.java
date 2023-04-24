@@ -81,9 +81,14 @@ public class WebCrawler {
 
     public List<String> getHeadingsAsList(){
         List<String> headingsList = new ArrayList<>();
-        for (WebPage page : webPages) {
-            String headingText = page.getHeadingsToText();
-            headingsList.add(headingText);
+        StringBuilder headingText = new StringBuilder();
+        for(int i = 0; i < webPages.size(); i++) {
+            WebPage page = webPages.get(i);
+            headingText.append(page.getHeadingsToText());
+            if(headingText.length() > 3000 || i == webPages.size() -1) {
+                headingsList.add(headingText.toString());
+                headingText = new StringBuilder();
+            }
         }
 
         return headingsList;
