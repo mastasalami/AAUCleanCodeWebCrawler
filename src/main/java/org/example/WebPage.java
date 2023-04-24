@@ -97,12 +97,15 @@ public class WebPage {
     }
 
     public String getLinkText() {
-        if (document == null)
+        if (isLinkBroken())                                                                                             //the text should be corrected for broken links
             return getLinkText(true);
         else
             return getLinkText(false);
     }
 
+    private boolean isLinkBroken() {
+        return document == null;
+    }
     private String getLinkText(boolean isBrokenLink) {
         String linkText = getIndentationForDepth();
         if (isBrokenLink)
@@ -163,7 +166,7 @@ public class WebPage {
     private int getHeadingLevel(Element headingElement) {
         String elementName = headingElement.nodeName();
         int headingLevel = 0;
-        if (elementName.contains(HEADING_HTML_ELEMENT_NAME)) {
+        if (elementName.contains(HEADING_HTML_ELEMENT_NAME)) {                                                          //e.g. h2 translates to heading level 2
             String elementLevelText = elementName.replace(HEADING_HTML_ELEMENT_NAME, "");
             headingLevel = Integer.parseInt(elementLevelText);
         }
