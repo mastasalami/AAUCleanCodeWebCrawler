@@ -79,6 +79,16 @@ public class WebCrawler {
         return headingsText;
     }
 
+    public List<String> getHeadingsAsList(){
+        List<String> headingsList = new ArrayList<>();
+        for (WebPage page : webPages) {
+            String headingText = page.getHeadingsToText();
+            headingsList.add(headingText);
+        }
+
+        return headingsList;
+    }
+
     public String getLinksText() {
         String headingsText = "";
         for (WebPage page : webPages) {
