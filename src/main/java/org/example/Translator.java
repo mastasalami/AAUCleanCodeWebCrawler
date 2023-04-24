@@ -9,6 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class Translator {
     private final static String JSONOBJECT_DETECTED_KEY = "language";
@@ -28,6 +29,19 @@ public class Translator {
         setSourceLanguage(detectedLanguage);
         String translatedText = doTranslation(toTranslate);
         return translatedText;
+    }
+
+    public String translateList(String targetLanguage, List<String> toTranslate) throws IOException, InterruptedException {
+        setTargetLanguage(targetLanguage);
+        String detectedLanguage = detectSourceLanguage(toTranslate.get(0));
+        setSourceLanguage(detectedLanguage);
+        StringBuilder translatedText = new StringBuilder();
+
+        for (String translate: toTranslate) {
+            translatedText.append(doTranslation(translate));
+        }
+
+        return translatedText.toString();
     }
 
     private void setTargetLanguage(String targetLanguage){
