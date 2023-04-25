@@ -10,6 +10,9 @@ public class SummaryCreator {
     private String summaryString;
     private File outputFile;
 
+    private final boolean OVERWRITE_SUMMARY = false;
+    private final boolean APPEND_TO_SUMMARY = true;
+
     public SummaryCreator(String summaryString) throws IOException {
         this.summaryString = summaryString;
         outputFile = new File(FILE_NAME);
@@ -17,12 +20,19 @@ public class SummaryCreator {
     }
 
     public void writeSummaryToFile() throws IOException {
-        writeContentToSummary(summaryString, true);
+        writeContentToSummary(summaryString, APPEND_TO_SUMMARY);
     }
 
     private void createOrClearSummaryFile() throws IOException {
-        if (!outputFile.createNewFile())
-            writeContentToSummary("", false);
+        if (outputFile.exists())
+            clearSummaryfile();
+        else
+            outputFile.createNewFile();
+
+    }
+
+    private void clearSummaryfile() throws IOException {
+        writeContentToSummary("", OVERWRITE_SUMMARY);
     }
 
     private void writeContentToSummary(String content, boolean appendContent) throws IOException {
