@@ -19,12 +19,13 @@ public class GoogleTranslator implements Translator {
         languageTransformer = LanguageTransformer.getLanguageTransformer();
         httpParser = HttpParser.getHttpRequestParser();
     }
+    @Override
     public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
         setUpTranslation(targetLanguage, toTranslate);
         String translatedText = doTranslation();
         return translatedText;
     }
-
+    @Override
     public String translateMany(String targetLanguage, List<String> toTranslate) throws IOException, InterruptedException {
         List<String> formattedToTranslate = httpRequestCreator.formatForHttpRequest(toTranslate);
         StringBuilder translatedText = new StringBuilder();

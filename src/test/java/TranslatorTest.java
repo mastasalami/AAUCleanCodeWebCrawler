@@ -1,3 +1,4 @@
+import org.example.DummyTranslator;
 import org.example.Translator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -11,7 +12,7 @@ public class TranslatorTest {
 
     @BeforeEach
     public void setup() {
-        translator = new Translator();
+        translator = new DummyTranslator();
     }
 
     @AfterEach

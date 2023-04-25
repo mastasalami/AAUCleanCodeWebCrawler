@@ -34,7 +34,7 @@ public class Main {
 
             System.out.println("Crawling done!");
 
-            Translator translator = new Translator();
+            GoogleTranslator translator = new GoogleTranslator();
 
             List<String> headingsList = crawler.getHeadingsAsList();
 
