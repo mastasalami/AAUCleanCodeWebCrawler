@@ -15,6 +15,7 @@ public class HttpRequestCreator {
     private final String HEADER_APIHOST_NAME = "X-RapidAPI-Host";
     private final String HEADER_APIHOST_VALUE = "google-translator9.p.rapidapi.com";
     private final String SEND_DATA = "POST";
+    private final int CHARACTER_LIMIT = 3000;
 
     private enum HttpRequestType {
         DETECTLANGUAGE,
