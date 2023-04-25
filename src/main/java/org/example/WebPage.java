@@ -82,14 +82,14 @@ public class WebPage {
     }
 
     public String getHeadingsToText() {
-        String headingsText = "";
+        StringBuilder headingsText = new StringBuilder();
 
         for (Element heading : headings) {
-            headingsText += getElementText(heading);
+            headingsText.append(getElementText(heading));
         }
-        headingsText += LINE_BREAK_SYMBOL + LINE_BREAK_SYMBOL;
+        headingsText.append(LINE_BREAK_SYMBOL + LINE_BREAK_SYMBOL);
 
-        return headingsText;
+        return headingsText.toString();
     }
 
     public String getLinkText() {
