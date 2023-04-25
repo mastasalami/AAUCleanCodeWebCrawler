@@ -27,7 +27,8 @@ public class ConsoleReader {
     }
 
     public String readTargetLanguageFromConsole() throws IOException {
-        System.out.println("Enter the target language. The target language can be : ");
+        System.out.println("Enter the target language. The target language can be one of the google languages (code or long text)" +
+                "e.g. hungarian, it, tigrinya, english: ");
 
         return reader.readLine();
     }
