@@ -57,6 +57,17 @@ public class HttpRequestCreator {
         return translateRequest;
 
     }
+
+    public List<HttpRequest> buildManyTranslateLanguageHttpRequest(List<String> toTranslate, String sourceLanguage, String targetlanguage){
+        List<String> formattedToTranslate = formatForHttpRequest(toTranslate);
+        List<HttpRequest> translateRequests = new ArrayList<>();
+
+        for (String translate: formattedToTranslate) {
+            HttpRequest translateRequest = buildTranslateLanguageHttpRequest(translate,sourceLanguage,targetlanguage);
+            translateRequests.add(translateRequest);
+        }
+        return translateRequests;
+    }
     private HttpRequest.Builder buildHttpRequest(HttpRequestType requestType) {
         HttpRequest.Builder requestBuild = HttpRequest.newBuilder();
         if (isDetectLanguageRequest(requestType)) {
