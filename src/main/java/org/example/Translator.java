@@ -59,14 +59,14 @@ public class Translator {
     private String detectSourceLanguage(String toTranslate) throws IOException, InterruptedException {
         HttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(toTranslate);
         HttpResponse<String> detectResponse = sendHttpRequest(detectRequest);
-        String detectedLanguage = httpParser.parseHttpResponse(detectResponse, HttpParser.JSONOBJECT_DETECTED_KEY);
+        String detectedLanguage = httpParser.parseDetectResponse(detectResponse);
         return detectedLanguage;
     }
 
     private String doTranslation() throws IOException, InterruptedException {
         HttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate,this.sourceLanguage,this.targetLanguage);
         HttpResponse<String> translateResponse = sendHttpRequest(translateRequest);
-        String translatedText = httpParser.parseHttpResponse(translateResponse, HttpParser.JSONOBJECT_TRANSLATED_KEY);
+        String translatedText = httpParser.parseTranslateResponse(translateResponse);
         return translatedText;
     }
 

@@ -21,7 +21,14 @@ public class HttpParser {
         return parser;
     }
 
-  public String parseHttpResponse(HttpResponse<String> response, String jsonObjectKey) {
+    public String parseDetectResponse(HttpResponse<String> response){
+        return parseHttpResponse(response, JSONOBJECT_DETECTED_KEY);
+    }
+    public String parseTranslateResponse(HttpResponse<String> response){
+        return parseHttpResponse(response, JSONOBJECT_TRANSLATED_KEY);
+    }
+
+  private String parseHttpResponse(HttpResponse<String> response, String jsonObjectKey) {
         JSONArray responseJson = extractJsonArrayFromHttpResponse(response);
         StringBuilder parsedResponse = new StringBuilder();
         for (int i = 0; i < responseJson.length(); i++) {
