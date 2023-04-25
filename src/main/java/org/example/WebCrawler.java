@@ -13,16 +13,16 @@ import java.util.Set;
 public class WebCrawler {
     private Connection connection;
     private String url              = "https://www.aau.at/";
-    private int maxDepth            = 2;
-    private List<WebPage> webPages  = new ArrayList<>();
-    private Set<String> visitedUrls = new HashSet<>();
+    private final int maxDepth;
+    private final List<WebPage> webPages  = new ArrayList<>();
+    private final Set<String> visitedUrls = new HashSet<>();
 
     public WebCrawler(String url, int maxDepth) throws IOException {
         this.maxDepth = maxDepth;
         init(url);
     }
 
-    private void init(String url) throws IOException {
+    private void init(String url) {
         this.url = url;
         connection = Jsoup.connect(url);
     }
@@ -54,7 +54,7 @@ public class WebCrawler {
     }
 
     private WebPage getWebPageFromConnection(int depth) throws Exception {
-        Document document = null;
+        Document document;
         try {
             document = getDocumentFromConnection();
         } catch (IOException e) {                               //This means the call to get the page failed for some reason (Timeout, NoAccess,...)
@@ -82,12 +82,12 @@ public class WebCrawler {
     }
 
     public String getHeadingsText() {
-        String headingsText = "";
+        StringBuilder headingsText = new StringBuilder();
         for (WebPage page : webPages) {
-            headingsText += page.getHeadingsToString();
+            headingsText.append(page.getHeadingsToString());
         }
 
-        return headingsText;
+        return headingsText.toString();
     }
 
     public List<String> getHeadingsAsList(){
@@ -95,7 +95,7 @@ public class WebCrawler {
         StringBuilder headingText = new StringBuilder();
         for(int i = 0; i < webPages.size(); i++) {
             WebPage page = webPages.get(i);
-            headingText.append(page.getHeadingsToText());
+            headingText.append(page.getHeadingsToString());
             if(headingText.length() > 3000 || i == webPages.size() -1) {
                 headingsList.add(headingText.toString());
                 headingText = new StringBuilder();
@@ -106,11 +106,11 @@ public class WebCrawler {
     }
 
     public String getLinksText() {
-        String headingsText = "";
+        StringBuilder headingsText = new StringBuilder();
         for (WebPage page : webPages) {
-            headingsText += page.getLinkText();
+            headingsText.append(page.getLinkText());
         }
 
-        return headingsText;
+        return headingsText.toString();
     }
 }
