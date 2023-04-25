@@ -57,7 +57,7 @@ public class HttpRequestCreator {
         return translateRequest;
 
     }
-
+    //This Method is for potential future use
     public List<HttpRequest> buildManyTranslateLanguageHttpRequest(List<String> toTranslate, String sourceLanguage, String targetlanguage){
         List<String> formattedToTranslate = formatForHttpRequest(toTranslate);
         List<HttpRequest> translateRequests = new ArrayList<>();
@@ -83,7 +83,7 @@ public class HttpRequestCreator {
     private boolean isDetectLanguageRequest(HttpRequestType requestType){
         return HttpRequestType.DETECTLANGUAGE == requestType;
     }
-    private List<String> formatForHttpRequest(List<String> toFormat){
+    public List<String> formatForHttpRequest(List<String> toFormat){
         List<String> formattedList = new ArrayList<>();
         StringBuilder putTogether = new StringBuilder();
 

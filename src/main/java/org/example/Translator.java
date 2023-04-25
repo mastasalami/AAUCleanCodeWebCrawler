@@ -11,6 +11,7 @@ import java.util.List;
 public class Translator {
     private String sourceLanguage;
     private String targetLanguage;
+    private String toTranslate;
     private final HttpRequestCreator httpRequestCreator;
     private final LanguageTransformer languageTransformer;
     private final HttpParser httpParser;
@@ -21,24 +22,27 @@ public class Translator {
         httpParser = HttpParser.getHttpRequestParser();
     }
     public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
-        setTargetLanguage(targetLanguage);
-        String detectedLanguage = detectSourceLanguage(toTranslate);
-        setSourceLanguage(detectedLanguage);
-        String translatedText = doTranslation(toTranslate);
+        setUpTranslation(targetLanguage, toTranslate);
+        String translatedText = doTranslation();
         return translatedText;
     }
 
-    public String translateList(String targetLanguage, List<String> toTranslate) throws IOException, InterruptedException {
-        setTargetLanguage(targetLanguage);
-        String detectedLanguage = detectSourceLanguage(toTranslate.get(0));
-        setSourceLanguage(detectedLanguage);
+    public String translateMany(String targetLanguage, List<String> toTranslate) throws IOException, InterruptedException {
+        List<String> formattedToTranslate = httpRequestCreator.formatForHttpRequest(toTranslate);
         StringBuilder translatedText = new StringBuilder();
 
-        for (String translate: toTranslate) {
-            translatedText.append(doTranslation(translate));
+        for (String translate: formattedToTranslate) {
+           String translated = translate(targetLanguage, translate);
+           translatedText.append(translated);
         }
-
         return translatedText.toString();
+    }
+
+    private void setUpTranslation(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
+        setTargetLanguage(targetLanguage);
+        String detectedLanguage = detectSourceLanguage(toTranslate);
+        setSourceLanguage(detectedLanguage);
+        setToTranslate(toTranslate);
     }
 
     private void setTargetLanguage(String targetLanguage){
@@ -48,6 +52,10 @@ public class Translator {
     private void setSourceLanguage(String sourceLanguage){
         this.sourceLanguage = sourceLanguage;
     }
+
+    private void setToTranslate(String toTranslate){
+        this.toTranslate = toTranslate;
+    }
     private String detectSourceLanguage(String toTranslate) throws IOException, InterruptedException {
         HttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(toTranslate);
         HttpResponse<String> detectResponse = sendHttpRequest(detectRequest);
@@ -55,7 +63,7 @@ public class Translator {
         return detectedLanguage;
     }
 
-    private String doTranslation(String toTranslate) throws IOException, InterruptedException {
+    private String doTranslation() throws IOException, InterruptedException {
         HttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate,this.sourceLanguage,this.targetLanguage);
         HttpResponse<String> translateResponse = sendHttpRequest(translateRequest);
         String translatedText = httpParser.parseHttpResponse(translateResponse, HttpParser.JSONOBJECT_TRANSLATED_KEY);
