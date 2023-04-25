@@ -5,7 +5,7 @@ import java.net.http.HttpRequest;
 
 public class HttpRequestCreator {
 
-    private static HttpRequestCreator instance;
+    private static HttpRequestCreator requestCreator;
     private final String URI_TRANSLATE = "https://google-translator9.p.rapidapi.com/v2";
     private final String URI_DETECT = "https://google-translator9.p.rapidapi.com/v2/detect";
     private final String HEADER_CONTENT_NAME = "content-type";
@@ -23,19 +23,19 @@ public class HttpRequestCreator {
 
 
     public static HttpRequestCreator getHttpRequestCreator() {
-        if (instance == null) {
-            instance = new HttpRequestCreator();
+        if (requestCreator == null) {
+            requestCreator = new HttpRequestCreator();
         }
 
-        return instance;
+        return requestCreator;
     }
 
 
-    public HttpRequest buildDetectLanguageHttpRequest(String toDetect) {
+    public HttpRequest buildDetectLanguageHttpRequest(String textExampleOfLanguageToDetect) {
         HttpRequest.Builder requestBuild = buildHttpRequest(HttpRequestType.DETECTLANGUAGE);
 
         requestBuild.method(SEND_DATA, HttpRequest.BodyPublishers.ofString("{\r\"q\": \""
-                + toDetect + "\"\r}"));
+                + textExampleOfLanguageToDetect + "\"\r}"));
 
         HttpRequest detectRequest = requestBuild.build();
 

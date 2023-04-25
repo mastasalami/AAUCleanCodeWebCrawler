@@ -64,7 +64,7 @@ public class LanguageTransformer {
 
     private String languageToLanguageCode(String language){
         if(isGoogleLanguageCode(language)) return language;
-        if(!isGoogleLanguage(language)) return null;
+        if(!isGoogleLanguage(language)) throw new IllegalArgumentException("Language is not supported");
 
         String languageCode = googleLanguagesAndCodes.get(language);
         return languageCode;

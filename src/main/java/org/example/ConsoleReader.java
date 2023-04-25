@@ -15,9 +15,8 @@ public class ConsoleReader {
 
     public String readUrlFromConsole() throws IOException {
         System.out.println("Enter the url:");
-        String url = reader.readLine();
 
-        return url;
+        return reader.readLine();
     }
 
     public int readSearchDepthsFromConsole() throws IOException {
@@ -28,9 +27,8 @@ public class ConsoleReader {
     }
 
     public String readTargetLanguageFromConsole() throws IOException {
-        System.out.println("Enter the target language:");
-        String targetLanguage = reader.readLine();
+        System.out.println("Enter the target language. The target language can be : ");
 
-        return targetLanguage;
+        return reader.readLine();
     }
 }

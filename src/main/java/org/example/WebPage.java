@@ -20,11 +20,11 @@ public class WebPage {
     private static final String OPEN_LINK_TAG                       = "<a>";
     private static final String CLOSE_LINK_TAG                      = "</a>";
 
-    private Document document;
+    private final Document document;
     private List<Element> links     = new ArrayList<>();
-    private List<Element> headings  = new ArrayList<>();
-    private String url;
-    private int depth;
+    private final List<Element> headings  = new ArrayList<>();
+    private final String url;
+    private final int depth;
 
     public WebPage(Document document, String url, int depth) throws Exception {
         this.document = document;
@@ -66,7 +66,7 @@ public class WebPage {
     }
 
     public List<String> getLinkUrls() {
-        List<String> linkUrls = new ArrayList<String>();
+        List<String> linkUrls = new ArrayList<>();
         for (Element link : links) {
             String linkUrl = getExternalLinkUrlFromElement(link);
             linkUrls.add(linkUrl);
@@ -78,22 +78,26 @@ public class WebPage {
     private String getExternalLinkUrlFromElement(Element element) {
         String linkUrl = element.attr(LINK_ATTRIBUTE);
 
-        if (linkUrl.startsWith(EXTERNAL_WEBSITE_INDICATOR) && !linkUrl.contains(this.url))
+        if (isLinkForExternalWebsite(linkUrl))
             return linkUrl;
-        return new String();
+        return "";
+    }
+
+    private boolean isLinkForExternalWebsite(String linkUrl) {
+        return (linkUrl.startsWith(EXTERNAL_WEBSITE_INDICATOR) && !linkUrl.contains(this.url));
     }
 
     public String getHeadingsToString() {
-        String headingsText = "";
+        StringBuilder headingsText = new StringBuilder();
 
         for (Element heading : headings) {
-            headingsText += getElementText(heading);
+            headingsText.append(getElementText(heading));
         }
 
         if (!headingsText.isEmpty())
-            headingsText += LINE_BREAK_SYMBOL + LINE_BREAK_SYMBOL;
+            headingsText.append(LINE_BREAK_SYMBOL + LINE_BREAK_SYMBOL);
 
-        return headingsText;
+        return headingsText.toString();
     }
 
     public String getLinkText() {
@@ -140,27 +144,25 @@ public class WebPage {
     }
 
     private String getIndentationForDepth() {
-        String indentationString = "";
+        StringBuilder indentationString = new StringBuilder();
 
-        for (int i = 0; i < depth; i++)
-            indentationString += "--";
+        indentationString.append("--".repeat(Math.max(0, depth)));
 
-        if (!indentationString.isEmpty())
-            indentationString += "> ";
+        if (indentationString.length() > 0)
+            indentationString.append("> ");
 
-        return indentationString;
+        return indentationString.toString();
     }
 
     private String getIndentationForHeadingLevel(Element el) {
-        String indentationString = "";
+        StringBuilder indentationString = new StringBuilder();
 
-        for (int i = 0; i < getHeadingLevel(el)+1; i++)
-            indentationString += "#";
+        indentationString.append("#".repeat(Math.max(0, getHeadingLevel(el) + 1)));
 
-        if (!indentationString.isEmpty())
-            indentationString += " ";
+        if (indentationString.length() > 0)
+            indentationString.append(" ");
 
-        return indentationString;
+        return indentationString.toString();
     }
 
     private int getHeadingLevel(Element headingElement) {

@@ -12,10 +12,10 @@ import java.util.Set;
 
 public class WebCrawler {
     private String url;
-    private int maxDepth;
+    private final int maxDepth;
     private Connection connection;
-    private List<WebPage> webPages = new ArrayList<>();
-    private Set<String> visitedUrls = new HashSet<>();
+    private final List<WebPage> webPages = new ArrayList<>();
+    private final Set<String> visitedUrls = new HashSet<>();
 
     public WebCrawler(String url, int maxDepth) throws IOException {
         this.maxDepth = maxDepth;
@@ -85,7 +85,7 @@ public class WebCrawler {
     public String getHeadingsText() {
         StringBuilder headingsText = new StringBuilder();
         for (WebPage page : webPages) {
-            headingsText.append(page.getHeadingsText());
+            headingsText.append(page.getHeadingsToString());
         }
 
         return headingsText.toString();
@@ -94,7 +94,7 @@ public class WebCrawler {
     public List<String> getHeadingsAsList(){
         List<String> headingsList = new ArrayList<>();
         for (WebPage page: webPages) {
-            headingsList.add(page.getHeadingsText());
+            headingsList.add(page.getHeadingsToString());
         }
 
         return headingsList;
