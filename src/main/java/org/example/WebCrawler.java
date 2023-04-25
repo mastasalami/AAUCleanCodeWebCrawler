@@ -71,12 +71,12 @@ public class WebCrawler {
     }
 
     public String getHeadingsText() {
-        String headingsText = "";
+        StringBuilder headingsText = new StringBuilder();
         for (WebPage page : webPages) {
-            headingsText += page.getHeadingsToText();
+            headingsText.append(page.getHeadingsToText());
         }
 
-        return headingsText;
+        return headingsText.toString();
     }
     //
     public List<String> getHeadingsAsList(){
