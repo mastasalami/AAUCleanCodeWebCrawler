@@ -6,6 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+//Only used for testing
 public class DummyTranslator implements Translator{
     private String sourceLanguage;
     private String targetLanguage;
