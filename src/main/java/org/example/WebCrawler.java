@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.Set;
 
 public class WebCrawler {
-    private String url = "https://www.aau.at/";
-    private int maxDepth = 2;
+    private String url;
+    private int maxDepth;
     private Connection connection;
     private List<WebPage> webPages = new ArrayList<>();
     private Set<String> visitedUrls = new HashSet<>();
 
     public WebCrawler(String url, int maxDepth) throws IOException {
         this.maxDepth = maxDepth;
-        init(url);
+        createNewConnection(url);        //For potential future methods
     }
 
-    private void init(String url) throws IOException {
+    private void createNewConnection(String url) {
         this.url = url;
         connection = Jsoup.connect(url);
     }
@@ -35,7 +35,7 @@ public class WebCrawler {
         crawl(this.url, 0);
     }
     private void crawl(String initialUrl, int depth) throws Exception {
-        init(initialUrl);
+        createNewConnection(initialUrl);
         System.out.println("Crawling url:" + initialUrl);
 
         WebPage initialPage = getWebPageFromConnection(depth);
