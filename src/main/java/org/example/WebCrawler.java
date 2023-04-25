@@ -89,11 +89,11 @@ public class WebCrawler {
     }
 
     public String getLinksText() {
-        String headingsText = "";
+        StringBuilder headingsText = new StringBuilder();
         for (WebPage page : webPages) {
-            headingsText += page.getLinkText();
+            headingsText.append(page.getLinkText());
         }
 
-        return headingsText;
+        return headingsText.toString();
     }
 }
