@@ -6,9 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="WebCrawler" />
         <module name="untitled" />
         <module name="AAUCleanCodeWebCrawler" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AAUCleanCodeWebCrawler" target="18" />
+    </bytecodeTargetLevel>
   </component>
 </project>

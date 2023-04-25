@@ -1,47 +1,48 @@
 package org.example;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
 public class Translator {
-    private final static String JSONOBJECT_DETECTED_KEY = "language";
-    private final static String JSONOBJECT_TRANSLATED_KEY = "translatedText";
     private String sourceLanguage;
     private String targetLanguage;
+    private String toTranslate;
     private final HttpRequestCreator httpRequestCreator;
     private final LanguageTransformer languageTransformer;
+    private final HttpParser httpParser;
 
     public Translator() {
         httpRequestCreator = HttpRequestCreator.getHttpRequestCreator();
         languageTransformer = LanguageTransformer.getLanguageTransformer();
+        httpParser = HttpParser.getHttpRequestParser();
     }
     public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
-        setTargetLanguage(targetLanguage);
-        String detectedLanguage = detectSourceLanguage(toTranslate);
-        setSourceLanguage(detectedLanguage);
-        String translatedText = doTranslation(toTranslate);
+        setUpTranslation(targetLanguage, toTranslate);
+        String translatedText = doTranslation();
         return translatedText;
     }
 
-    public String translateList(String targetLanguage, List<String> toTranslate) throws IOException, InterruptedException {
-        setTargetLanguage(targetLanguage);
-        String detectedLanguage = detectSourceLanguage(toTranslate.get(0));
-        setSourceLanguage(detectedLanguage);
+    public String translateMany(String targetLanguage, List<String> toTranslate) throws IOException, InterruptedException {
+        List<String> formattedToTranslate = httpRequestCreator.formatForHttpRequest(toTranslate);
         StringBuilder translatedText = new StringBuilder();
 
-        for (String translate: toTranslate) {
-            translatedText.append(doTranslation(translate));
+        for (String translate: formattedToTranslate) {
+           String translated = translate(targetLanguage, translate);
+           translatedText.append(translated);
         }
-
         return translatedText.toString();
+    }
+
+    private void setUpTranslation(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
+        setTargetLanguage(targetLanguage);
+        String detectedLanguage = detectSourceLanguage(toTranslate);
+        setSourceLanguage(detectedLanguage);
+        setToTranslate(toTranslate);
     }
 
     private void setTargetLanguage(String targetLanguage){
@@ -51,17 +52,21 @@ public class Translator {
     private void setSourceLanguage(String sourceLanguage){
         this.sourceLanguage = sourceLanguage;
     }
+
+    private void setToTranslate(String toTranslate){
+        this.toTranslate = toTranslate;
+    }
     private String detectSourceLanguage(String toTranslate) throws IOException, InterruptedException {
         HttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(toTranslate);
         HttpResponse<String> detectResponse = sendHttpRequest(detectRequest);
-        String detectedLanguage = parseHttpResponse(detectResponse,JSONOBJECT_DETECTED_KEY);
+        String detectedLanguage = httpParser.parseDetectResponse(detectResponse);
         return detectedLanguage;
     }
 
-    private String doTranslation(String toTranslate) throws IOException, InterruptedException {
+    private String doTranslation() throws IOException, InterruptedException {
         HttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate,this.sourceLanguage,this.targetLanguage);
         HttpResponse<String> translateResponse = sendHttpRequest(translateRequest);
-        String translatedText = parseHttpResponse(translateResponse,JSONOBJECT_TRANSLATED_KEY);
+        String translatedText = httpParser.parseTranslateResponse(translateResponse);
         return translatedText;
     }
 
@@ -70,27 +75,4 @@ public class Translator {
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         return response;
     }
-
-    private String parseHttpResponse(HttpResponse<String> response, String jsonObjectKey){
-        JSONArray responseJson = extractJsonArrayFromHttpResponse(response);
-        StringBuilder parsedResponse = new StringBuilder();
-    //Maybe extract method
-        for (int i = 0; i < responseJson.length(); i++) {
-            JSONObject responseObject = responseJson.getJSONObject(i);
-            String parsed = responseObject.getString(jsonObjectKey);
-            parsedResponse.append(parsed);
-        }
-        String parsedString = parsedResponse.toString();
-        return parsedString;
-    }
-
-    private JSONArray extractJsonArrayFromHttpResponse(HttpResponse<String> response){
-        String responseBody = response.body();
-        //TODO write comment
-        int jsonArrayStartIndex = responseBody.lastIndexOf('[');
-        String extracted = responseBody.substring(jsonArrayStartIndex);
-        return new JSONArray(extracted);
-    }
-
-
 }

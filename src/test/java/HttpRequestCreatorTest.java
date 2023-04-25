@@ -1,3 +1,4 @@
+import org.example.HttpParser;
 import org.example.HttpRequestCreator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -7,7 +8,10 @@ import org.junit.jupiter.api.Test;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.URI;
+import java.security.PrivateKey;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class HttpRequestCreatorTest {
     HttpRequestCreator httpRequestCreator;
@@ -55,6 +59,14 @@ public class HttpRequestCreatorTest {
 
     }
 
+    @Test
+    public void transformListWithTenEntriesAndNineThousandChars(){
+        List<String> listWithTenEntriesAndTenThousandChars = returnListWithTenEntriesAndNineHundredCharsPerEntry();
+       List<String> transformedList = httpRequestCreator.formatForHttpRequest(listWithTenEntriesAndTenThousandChars);
+       Assertions.assertEquals(3,transformedList.size());
+       Assertions.assertEquals(3600,transformedList.get(0).length());
+    }
+
 
     private HttpRequest normalHttpRequestCreationTranslate(){
         HttpRequest translateRequest = HttpRequest.newBuilder()
@@ -90,6 +102,31 @@ public class HttpRequestCreatorTest {
         String headersToString = headers.toString();
         String transformedHeaders = headersToString.substring(34);
         return transformedHeaders;
+    }
+
+    private List<String> returnListWithTenEntriesAndNineHundredCharsPerEntry(){
+        String ninehundredChars = returnNinehundredChars();
+
+        List<String> listWithTenEntriesAndNineHundredCharsPerEntry = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            listWithTenEntriesAndNineHundredCharsPerEntry.add(ninehundredChars);
+        }
+        return listWithTenEntriesAndNineHundredCharsPerEntry;
+    }
+
+    private String returnNinehundredChars(){
+        String ninehundredChars =  "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+                        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+                        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+                        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+                        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+                        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+                        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+                        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+                        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+
+        return ninehundredChars;
     }
 
 

@@ -2,6 +2,8 @@ package org.example;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HttpRequestCreator {
 
@@ -15,6 +17,7 @@ public class HttpRequestCreator {
     private final String HEADER_APIHOST_NAME = "X-RapidAPI-Host";
     private final String HEADER_APIHOST_VALUE = "google-translator9.p.rapidapi.com";
     private final String SEND_DATA = "POST";
+    private final int CHARACTER_LIMIT = 3000;
 
     private enum HttpRequestType {
         DETECTLANGUAGE,
@@ -54,12 +57,20 @@ public class HttpRequestCreator {
         return translateRequest;
 
     }
+    //This Method is for potential future use
+    public List<HttpRequest> buildManyTranslateLanguageHttpRequest(List<String> toTranslate, String sourceLanguage, String targetlanguage){
+        List<String> formattedToTranslate = formatForHttpRequest(toTranslate);
+        List<HttpRequest> translateRequests = new ArrayList<>();
 
-    //Vielleicht ist gleich in eine andere methode rausziehen
-
+        for (String translate: formattedToTranslate) {
+            HttpRequest translateRequest = buildTranslateLanguageHttpRequest(translate,sourceLanguage,targetlanguage);
+            translateRequests.add(translateRequest);
+        }
+        return translateRequests;
+    }
     private HttpRequest.Builder buildHttpRequest(HttpRequestType requestType) {
         HttpRequest.Builder requestBuild = HttpRequest.newBuilder();
-        if (requestType == HttpRequestType.DETECTLANGUAGE) {
+        if (isDetectLanguageRequest(requestType)) {
             requestBuild.uri(URI.create(URI_DETECT));
         } else {
             requestBuild.uri(URI.create(URI_TRANSLATE));
@@ -68,5 +79,23 @@ public class HttpRequestCreator {
                 .header(HEADER_APIKEY_NAME, HEADER_APIKEY_VALUE)
                 .header(HEADER_APIHOST_NAME, HEADER_APIHOST_VALUE);
         return requestBuild;
+    }
+    private boolean isDetectLanguageRequest(HttpRequestType requestType){
+        return HttpRequestType.DETECTLANGUAGE == requestType;
+    }
+    public List<String> formatForHttpRequest(List<String> toFormat){
+        List<String> formattedList = new ArrayList<>();
+        StringBuilder putTogether = new StringBuilder();
+
+        for (int i = 0; i < toFormat.size(); i++) {
+            String element = toFormat.get(i);
+            putTogether.append(element);
+            if(putTogether.length() > CHARACTER_LIMIT || i == toFormat.size() -1){
+                formattedList.add(putTogether.toString());
+                putTogether = new StringBuilder();
+
+            }
+        }
+        return formattedList;
     }
 }
