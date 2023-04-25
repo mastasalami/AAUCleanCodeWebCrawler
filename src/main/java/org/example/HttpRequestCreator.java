@@ -55,12 +55,9 @@ public class HttpRequestCreator {
         return translateRequest;
 
     }
-
-    //Vielleicht ist gleich in eine andere methode rausziehen
-
     private HttpRequest.Builder buildHttpRequest(HttpRequestType requestType) {
         HttpRequest.Builder requestBuild = HttpRequest.newBuilder();
-        if (requestType == HttpRequestType.DETECTLANGUAGE) {
+        if (isDetectLanguageRequest(requestType)) {
             requestBuild.uri(URI.create(URI_DETECT));
         } else {
             requestBuild.uri(URI.create(URI_TRANSLATE));
@@ -69,5 +66,8 @@ public class HttpRequestCreator {
                 .header(HEADER_APIKEY_NAME, HEADER_APIKEY_VALUE)
                 .header(HEADER_APIHOST_NAME, HEADER_APIHOST_VALUE);
         return requestBuild;
+    }
+    private boolean isDetectLanguageRequest(HttpRequestType requestType){
+        return HttpRequestType.DETECTLANGUAGE == requestType;
     }
 }
