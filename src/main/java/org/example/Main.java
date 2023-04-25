@@ -38,7 +38,7 @@ public class Main {
 
             List<String> headingsList = crawler.getHeadingsAsList();
 
-            String headingsTranslated = translator.translateList(language,headingsList);
+            String headingsTranslated = translator.translateMany(language,headingsList);
             String linkTexts = crawler.getLinksText();
 
             String summary = headingsTranslated + linkTexts;
