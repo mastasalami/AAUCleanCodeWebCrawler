@@ -55,6 +55,8 @@ public class HttpRequestCreator {
 
     }
 
+    //Vielleicht ist gleich in eine andere methode rausziehen
+
     private HttpRequest.Builder buildHttpRequest(HttpRequestType requestType) {
         HttpRequest.Builder requestBuild = HttpRequest.newBuilder();
         if (requestType == HttpRequestType.DETECTLANGUAGE) {

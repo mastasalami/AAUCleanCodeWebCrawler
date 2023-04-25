@@ -166,7 +166,7 @@ public class WebPage {
     private int getHeadingLevel(Element headingElement) {
         String elementName = headingElement.nodeName();
         int headingLevel = 0;
-        if (elementName.contains(HEADING_HTML_ELEMENT_NAME)) {                                                          //e.g. h2 translates to heading level 2
+        if (elementName.contains(HEADING_HTML_ELEMENT_NAME)) {
             String elementLevelText = elementName.replace(HEADING_HTML_ELEMENT_NAME, "");
             headingLevel = Integer.parseInt(elementLevelText);
         }
