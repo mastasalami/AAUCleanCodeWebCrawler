@@ -67,16 +67,4 @@ public class Translator {
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         return response;
     }
-
-    private String parseHttpResponse(HttpResponse<String> response, String jsonObjectKey){
-        //Maybe extract method
-        return httpParser.parseHttpResponse(response, jsonObjectKey);
-    }
-
-    private JSONArray extractJsonArrayFromHttpResponse(HttpResponse<String> response){
-        //TODO write comment
-        return httpParser.extractJsonArrayFromHttpResponse(response);
-    }
-
-
 }
