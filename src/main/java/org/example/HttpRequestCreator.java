@@ -2,6 +2,8 @@ package org.example;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HttpRequestCreator {
 
@@ -69,5 +71,20 @@ public class HttpRequestCreator {
     }
     private boolean isDetectLanguageRequest(HttpRequestType requestType){
         return HttpRequestType.DETECTLANGUAGE == requestType;
+    }
+    private List<String> formatForHttpRequest(List<String> toFormat){
+        List<String> formattedList = new ArrayList<>();
+        StringBuilder putTogether = new StringBuilder();
+
+        for (int i = 0; i < toFormat.size(); i++) {
+            String element = toFormat.get(i);
+            putTogether.append(element);
+            if(putTogether.length() > CHARACTER_LIMIT || i == toFormat.size() -1){
+                formattedList.add(putTogether.toString());
+                putTogether = new StringBuilder();
+
+            }
+        }
+        return formattedList;
     }
 }
