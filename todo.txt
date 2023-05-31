@@ -1,0 +1,4 @@
+- Entkopeln von JSOUP Calls
+- Entkopeln von JSOUP Datentypen
+- Errorhandling verbessern
+- Neue Klasse für Concurrent WebCrawling
