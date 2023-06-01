@@ -11,7 +11,7 @@ public class Logger {
         loggedMessages = new ArrayList<>();
     }
 
-    public static synchronized Logger getInstance() {
+    public static synchronized Logger getInstance() {                                                                   // This is a singleton so every other class can use the same error log (we just need 1 summary of all errors)
         if (logger == null)
             logger = new Logger();
 

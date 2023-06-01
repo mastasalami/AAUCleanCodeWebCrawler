@@ -34,7 +34,6 @@ public class WebCrawler {
     }
     private void crawl(String initialUrl, int depth) {
         createNewConnection(initialUrl);
-        System.out.println("Crawling url:" + initialUrl);
         try {
             WebPage initialPage = getWebPageFromConnection(depth);
             if (depth < maxDepth) {

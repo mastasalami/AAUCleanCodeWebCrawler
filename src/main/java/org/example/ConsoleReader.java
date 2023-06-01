@@ -14,7 +14,7 @@ public class ConsoleReader {
     }
 
     public String readUrlFromConsole() throws IOException {
-        System.out.println("Enter the url:");
+        System.out.println("Enter the urls (different urls should be seperated by ',' symbols:");
 
         return reader.readLine();
     }
