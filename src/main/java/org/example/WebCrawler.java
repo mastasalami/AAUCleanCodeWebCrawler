@@ -14,11 +14,11 @@ public class WebCrawler {
     private final List<WebPage> webPages = new ArrayList<>();
     private final Set<String> visitedUrls = new HashSet<>();
 
-    public WebCrawler(String url, int maxDepth) throws IOException {
-        this.maxDepth = maxDepth;
+    private Logger logger = Logger.getInstance();
 
+    public WebCrawler(int maxDepth) {
+        this.maxDepth = maxDepth;
         connection = new CrawlerConnection();
-        createNewConnection(url);        //For potential future methods
     }
 
     private void createNewConnection(String url) {
@@ -26,24 +26,29 @@ public class WebCrawler {
     }
 
     private Document getDocumentFromConnection() throws IOException {
-        return connection.getDocumentFromConnection();
+        return connection.loadDocument();
     }
 
-    public void crawl() throws Exception {
-        crawl(connection.getUrl(), 0);
+    public void crawl(String initialUrl) {
+        crawl(initialUrl, 0);
     }
-    private void crawl(String initialUrl, int depth) throws Exception {
+    private void crawl(String initialUrl, int depth) {
         createNewConnection(initialUrl);
         System.out.println("Crawling url:" + initialUrl);
-
-        WebPage initialPage = getWebPageFromConnection(depth);
-        if (depth < maxDepth) {
-            depth++;
-            List<String> linkUrls = initialPage.getLinkUrls();
-            for (String url : linkUrls) {
-                if (shouldCrawlUrl(url))
-                    crawl(url, depth);
+        try {
+            WebPage initialPage = getWebPageFromConnection(depth);
+            if (depth < maxDepth) {
+                depth++;
+                List<String> linkUrls = initialPage.getLinkUrls();
+                for (String url : linkUrls) {
+                    if (shouldCrawlUrl(url))
+                        crawl(url, depth);
+                }
             }
+        }
+        catch (IOException e) {
+            visitedUrls.add(connection.getUrl());
+            logger.log("URL:" + connection.getUrl() + " could not be fetched!");
         }
     }
 
@@ -51,27 +56,25 @@ public class WebCrawler {
         return (!url.isEmpty() && !visitedUrls.contains(url));
     }
 
-    private WebPage getWebPageFromConnection(int depth) throws Exception {
-        Document document;
-        try {
-            document = getDocumentFromConnection();
-        } catch (IOException e) {                               //This means the call to get the page failed for some reason (Timeout, NoAccess,...)
-            return createNotReachableWebPage(depth);
-        }
+    private WebPage getWebPageFromConnection(int depth) throws IOException {
+        Document document = getDocumentFromConnection();
 
-        return createReachableWebPage(document, depth);
+        if (document == null)                                                                                           //This means the call to get the page failed for some reason (Timeout, NoAccess,...)
+            return createNotReachableWebPage(depth);
+        else
+            return createReachableWebPage(document, depth);
     }
 
-    private WebPage createNotReachableWebPage(int depth) throws Exception {
+    private WebPage createNotReachableWebPage(int depth) {
         WebPage page = new WebPage(null, connection.getUrl(), depth);
         addWebPageToList(page);
         return page;
     }
 
-    private WebPage createReachableWebPage(Document document, int depth) throws Exception {
+    private WebPage createReachableWebPage(Document document, int depth) {
         WebPage page = new WebPage(document, connection.getUrl(), depth);
+        page.loadElementsFromDocument();
         addWebPageToList(page);
-
         return page;
     }
 
@@ -82,6 +85,7 @@ public class WebCrawler {
 
     public String getHeadingsText() {
         StringBuilder headingsText = new StringBuilder();
+
         for (WebPage page : webPages) {
             headingsText.append(page.getHeadingsToString());
         }

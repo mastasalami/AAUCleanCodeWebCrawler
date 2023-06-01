@@ -34,7 +34,7 @@ public class WebPageTest {
     }
     @Test
     @DisplayName("Test web page url")
-    void testUrlWebPage() throws Exception {
+    void testUrlWebPage() {
         assertEquals(emptyWebPage.getUrl(), testUrl);
         assertEquals(webPageWithDocument.getUrl(), testUrl);
     }
@@ -42,7 +42,7 @@ public class WebPageTest {
 
     @Test
     @DisplayName("Test if the selected headings are correct")
-    void testWebPageHeadings() throws Exception {
+    void testWebPageHeadings() {
         assertTrue(emptyWebPage.getHeadingsToString().isEmpty());
         assertFalse(webPageWithDocument.getHeadingsToString().isEmpty());
 
@@ -52,7 +52,7 @@ public class WebPageTest {
 
     @Test
     @DisplayName("Test if the selected links are correct")
-    void testWebPageLinks() throws Exception {
+    void testWebPageLinks() {
         assertEquals(emptyWebPage.getLinkText(), brokenLinkText);
         assertEquals(webPageWithDocument.getLinkText(), workingLinkText);
     }
@@ -75,8 +75,9 @@ public class WebPageTest {
         String firstHeading = webPageWithDocument.getHeadingsToString();
         assertTrue(firstHeading.contains(firstHeadingTextDepth2));
     }
-    private void initEmptyWebPage() throws Exception {
+    private void initEmptyWebPage() {
         emptyWebPage = new WebPage(null, testUrl, testDepth);
+        emptyWebPage.loadElementsFromDocument();
     }
 
     private void initWebPageWithDocument(int depth) throws Exception {
@@ -84,5 +85,6 @@ public class WebPageTest {
         Document document = connection.execute().parse();
 
         webPageWithDocument = new WebPage(document, testUrl, depth);
+        webPageWithDocument.loadElementsFromDocument();
     }
 }

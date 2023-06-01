@@ -1,7 +1,6 @@
 package org.example;
 
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,25 +12,27 @@ public class WebPage {
     private static final String HEADING_HTML_ELEMENT_NAME           = "h";
     private static final String LINE_BREAK_SYMBOL                   = "\n";
     private static final String LINK_ATTRIBUTE                      = "href";
-    private static final String EXTERNAL_WEBSITE_INDICATOR          = "http";
 
     private static final String WORKING_LINK_TEXT                   = "link to";
     private static final String BROKEN_LINK_TEXT                    = "broken link";
     private static final String OPEN_LINK_TAG                       = "<a>";
     private static final String CLOSE_LINK_TAG                      = "</a>";
 
-    private final Document document;
-    private List<Element> links     = new ArrayList<>();
-    private final List<Element> headings  = new ArrayList<>();
+    private DOMDocument document;
+    private List<DOMElement> links                                  = new ArrayList<>();
+    private final List<DOMElement> headings                         = new ArrayList<>();
     private final String url;
     private final int depth;
 
-    public WebPage(Document document, String url, int depth) throws Exception {
-        this.document = document;
+    public WebPage(Document document, String url, int depth) {
+        if (document != null)
+            this.document = new DOMDocument(document);
         this.url = url;
         this.depth = depth;
+    }
 
-        if (this.document != null)
+    public void loadElementsFromDocument() {
+        if (document != null)
             getElementsFromDocument();
     }
 
@@ -39,58 +40,41 @@ public class WebPage {
         return url;
     }
 
-    private void getElementsFromDocument() throws Exception {
-        if (this.document != null) {
-            links = getElements(LINK_HTML_ELEMENT_NAME);
-            getHeadings();
+    private void getElementsFromDocument() {
+        if (document != null) {
+            links = document.loadElementsByTagName(LINK_HTML_ELEMENT_NAME);
+            loadHeadings();
         }
     }
 
-    private void getHeadings() throws Exception {
+    private void loadHeadings() {
         for (int level = HEADING_MIN_LEVEL; level < HEADING_MAX_LEVEL; level++) {
-            getHeadingsByLevel(level);
+            loadHeadingsByLevel(level);
         }
     }
 
-    private void getHeadingsByLevel(int level) throws Exception {
+    private void loadHeadingsByLevel(int level) {
         if (level < HEADING_MIN_LEVEL || level > HEADING_MAX_LEVEL)
-            throw new Exception("No HTML element with the tag " + HEADING_HTML_ELEMENT_NAME + level + " exists!");
+            throw new IllegalArgumentException("No HTML element with the tag " + HEADING_HTML_ELEMENT_NAME + level + " exists!");
 
         String headingSelector = HEADING_HTML_ELEMENT_NAME + level;
-        List<Element> headingsOfLevel = getElements(headingSelector);
+        List<DOMElement> headingsOfLevel = document.loadElementsByTagName(headingSelector);
         headings.addAll(headingsOfLevel);
-    }
-
-    private List<Element> getElements(String tagName) {
-        return document.getElementsByTag(tagName);
     }
 
     public List<String> getLinkUrls() {
         List<String> linkUrls = new ArrayList<>();
-        for (Element link : links) {
-            String linkUrl = getExternalLinkUrlFromElement(link);
+        for (DOMElement link : links) {
+            String linkUrl = link.getExternalLinkUrl(this.url);
             linkUrls.add(linkUrl);
         }
 
         return linkUrls;
     }
 
-    private String getExternalLinkUrlFromElement(Element element) {
-        String linkUrl = element.attr(LINK_ATTRIBUTE);
-
-        if (isLinkForExternalWebsite(linkUrl))
-            return linkUrl;
-        return "";
-    }
-
-    private boolean isLinkForExternalWebsite(String linkUrl) {
-        return (linkUrl.startsWith(EXTERNAL_WEBSITE_INDICATOR) && !linkUrl.contains(this.url));
-    }
-
     public String getHeadingsToString() {
         StringBuilder headingsText = new StringBuilder();
-
-        for (Element heading : headings) {
+        for (DOMElement heading : headings) {
             headingsText.append(getElementText(heading));
         }
 
@@ -125,18 +109,18 @@ public class WebPage {
         return linkText;
     }
 
-    public String getElementText(Element el) {
+    public String getElementText(DOMElement el) {
         String elementText = "";
 
-        if (el.nodeName().contains(HEADING_HTML_ELEMENT_NAME))
+        if (el.getName().contains(HEADING_HTML_ELEMENT_NAME))
             elementText += getIndentationForHeadingLevel(el);
 
         elementText += getIndentationForDepth();
 
-        if (el.nodeName().contains(HEADING_HTML_ELEMENT_NAME))
-            elementText += el.text();
+        if (el.getName().contains(HEADING_HTML_ELEMENT_NAME))
+            elementText += el.getText();
         else
-            elementText += el.attr(LINK_ATTRIBUTE);
+            elementText += el.getAttribute(LINK_ATTRIBUTE);
 
         elementText += LINE_BREAK_SYMBOL;
 
@@ -154,7 +138,7 @@ public class WebPage {
         return indentationString.toString();
     }
 
-    private String getIndentationForHeadingLevel(Element el) {
+    private String getIndentationForHeadingLevel(DOMElement el) {
         StringBuilder indentationString = new StringBuilder();
 
         indentationString.append("#".repeat(Math.max(0, getHeadingLevel(el) + 1)));
@@ -165,8 +149,8 @@ public class WebPage {
         return indentationString.toString();
     }
 
-    private int getHeadingLevel(Element headingElement) {
-        String elementName = headingElement.nodeName();
+    private int getHeadingLevel(DOMElement headingElement) {
+        String elementName = headingElement.getName();
         int headingLevel = 0;
         if (elementName.contains(HEADING_HTML_ELEMENT_NAME)) {
             String elementLevelText = elementName.replace(HEADING_HTML_ELEMENT_NAME, "");
