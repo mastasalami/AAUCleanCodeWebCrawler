@@ -54,7 +54,7 @@ public class WebCrawlerThreadTest {
     @Test
     void testCrawlForInvalidURL() {
         ThreadPoolExecutor executor =
-                (ThreadPoolExecutor) Executors.newFixedThreadPool(10);                                          // 10 Threads is maximum is enough. If there are only X urls we don`t need more
+                (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
         CompletionService<String> taskCompletionService = new ExecutorCompletionService<>(executor);
 
         WebCrawlerThread webCrawlerThread = new WebCrawlerThread(invalidUrl, testDepth, testLanguage);
