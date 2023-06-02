@@ -13,7 +13,7 @@ public class HttpRequestCreator {
     private final String HEADER_CONTENT_NAME = "content-type";
     private final String HEADER_CONTENT_VALUE = "application/json";
     private final String HEADER_APIKEY_NAME = "X-RapidAPI-Key";
-    private final String HEADER_APIKEY_VALUE = "1f5de7c1b6mshc346a13cd58af05p1a5df0jsne027c8bfa2cc";
+    private final String HEADER_APIKEY_VALUE = "";
     private final String HEADER_APIHOST_NAME = "X-RapidAPI-Host";
     private final String HEADER_APIHOST_VALUE = "google-translator9.p.rapidapi.com";
     private final String SEND_DATA = "POST";
