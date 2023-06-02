@@ -22,6 +22,9 @@ public class GoogleTranslator implements Translator {
     @Override
     public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
         setUpTranslation(targetLanguage, toTranslate);
+
+        if(sourceLanguage.equals(targetLanguage)) return targetLanguage;
+
         String translatedText = doTranslation();
         return translatedText;
     }
