@@ -1,7 +1,5 @@
 package org.example;
 
-import org.jsoup.nodes.Document;
-
 import java.util.ArrayList;
 import java.util.List;
 
