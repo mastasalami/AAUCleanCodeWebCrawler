@@ -72,7 +72,7 @@ public class HttpRequestCreatorTest {
         HttpRequest translateRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://google-translator9.p.rapidapi.com/v2"))
                 .header("content-type", "application/json")
-                .header("X-RapidAPI-Key", "1f5de7c1b6mshc346a13cd58af05p1a5df0jsne027c8bfa2cc")
+                .header("X-RapidAPI-Key", "")
                 .header("X-RapidAPI-Host", "google-translator9.p.rapidapi.com")
                 .method("POST", HttpRequest.BodyPublishers.ofString("{\r" +
                         "\"q\": \"Test\",\r" +
