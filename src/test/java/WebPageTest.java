@@ -1,3 +1,4 @@
+import org.example.DOMDocument;
 import org.example.WebPage;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -82,7 +83,7 @@ public class WebPageTest {
 
     private void initWebPageWithDocument(int depth) throws Exception {
         Connection connection = Jsoup.connect(testUrl);
-        Document document = connection.execute().parse();
+        DOMDocument document = new DOMDocument(connection.execute().parse());
 
         webPageWithDocument = new WebPage(document, testUrl, depth);
         webPageWithDocument.loadElementsFromDocument();

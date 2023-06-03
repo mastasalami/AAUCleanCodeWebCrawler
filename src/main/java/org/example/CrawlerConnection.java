@@ -22,8 +22,8 @@ public class CrawlerConnection {
         connection = Jsoup.connect(url);
     }
 
-    public Document loadDocument() throws IOException {
-        return connection != null ? connection.execute().parse() : null;
+    public DOMDocument loadDocument() throws IOException {
+        return connection != null ? new DOMDocument(connection.execute().parse()) : null;
     }
 
     public Connection getConnection() {
