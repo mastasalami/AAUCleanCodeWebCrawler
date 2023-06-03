@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.Translator.GoogleTranslator;
+import org.example.Translator.TranslationFailedException;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -38,7 +41,7 @@ public class WebCrawlerThread implements Callable<String> {
         try {
             GoogleTranslator translator = new GoogleTranslator();
             headingsTranslated = translator.translateMany(language, headings);
-        } catch (IOException | InterruptedException | RuntimeException e) {
+        } catch (TranslationFailedException e) {
             logger.log("Translation failed:" + e);
             headingsTranslated = crawler.getHeadingsText();
         }

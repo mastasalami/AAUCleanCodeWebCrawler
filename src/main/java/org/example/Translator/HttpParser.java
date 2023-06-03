@@ -21,14 +21,14 @@ public class HttpParser {
         return parser;
     }
 
-    public String parseDetectResponse(DOMHttpResponse response){
+    public String parseDetectResponse(DOMHttpResponse response) throws TranslationFailedException{
         return parseHttpResponse(response, JSONOBJECT_DETECTED_KEY);
     }
-    public String parseTranslateResponse(DOMHttpResponse response){
+    public String parseTranslateResponse(DOMHttpResponse response) throws TranslationFailedException{
         return parseHttpResponse(response, JSONOBJECT_TRANSLATED_KEY);
     }
 
-  private String parseHttpResponse(DOMHttpResponse response, String jsonObjectKey) {
+  private String parseHttpResponse(DOMHttpResponse response, String jsonObjectKey) throws TranslationFailedException{
         DOMJSONArray responseJson = extractDOMJsonArrayFromHttpResponse(response);
         StringBuilder parsedResponse = new StringBuilder();
 
@@ -41,12 +41,16 @@ public class HttpParser {
       return parsedResponse.toString();
     }
 
-    private DOMJSONArray extractDOMJsonArrayFromHttpResponse(DOMHttpResponse response) {
+    private DOMJSONArray extractDOMJsonArrayFromHttpResponse(DOMHttpResponse response) throws TranslationFailedException {
         String responseBody = response.body();
-        //In the HttpResponse of the Google Translate API wraps the JSON Array into something else. It also wraps the JSON array inside
-        // another JSON array for detect Requests. That's why I cut off part of the responseBody with lastIndexof('[')
-        int jsonArrayStartIndex = responseBody.lastIndexOf('[');
-        String extracted = responseBody.substring(jsonArrayStartIndex);
-        return new DOMJSONArray(extracted);
+        try {
+            //In the HttpResponse of the Google Translate API wraps the JSON Array into something else. It also wraps the JSON array inside
+            // another JSON array for detect Requests. That's why I cut off part of the responseBody with lastIndexof('[')
+            int jsonArrayStartIndex = responseBody.lastIndexOf('[');
+            String extracted = responseBody.substring(jsonArrayStartIndex);
+            return new DOMJSONArray(extracted);
+        } catch (RuntimeException e){
+            throw new TranslationFailedException("The translation api could not process the request because: " + responseBody);
+        }
     }
 }
