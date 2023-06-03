@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Translator;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -34,50 +34,50 @@ public class HttpRequestCreator {
     }
 
 
-    public HttpRequest buildDetectLanguageHttpRequest(String textExampleOfLanguageToDetect) {
-        HttpRequest.Builder requestBuild = buildHttpRequest(HttpRequestType.DETECTLANGUAGE);
+    public DOMHttpRequest buildDetectLanguageHttpRequest(String textExampleOfLanguageToDetect) {
+        DOMHttpRequestBuilder requestBuild = buildHttpRequest(HttpRequestType.DETECTLANGUAGE);
 
-        requestBuild.method(SEND_DATA, HttpRequest.BodyPublishers.ofString("{\r\"q\": \""
-                + textExampleOfLanguageToDetect + "\"\r}"));
+        requestBuild.setMethod(SEND_DATA,"{\r\"q\": \""
+                + textExampleOfLanguageToDetect + "\"\r}");
 
-        HttpRequest detectRequest = requestBuild.build();
+        DOMHttpRequest detectRequest = requestBuild.build();
 
         return detectRequest;
     }
 
-    public HttpRequest buildTranslateLanguageHttpRequest(String toTranslate, String sourceLanguage, String targetlanguage) {
-        HttpRequest.Builder requestBuild = buildHttpRequest(HttpRequestType.TRANSLATE);
-        requestBuild.method(SEND_DATA, HttpRequest.BodyPublishers.ofString("{\r\"q\": \""
+    public DOMHttpRequest buildTranslateLanguageHttpRequest(String toTranslate, String sourceLanguage, String targetlanguage) {
+        DOMHttpRequestBuilder requestBuild = buildHttpRequest(HttpRequestType.TRANSLATE);
+        requestBuild.setMethod(SEND_DATA,"{\r\"q\": \""
                 + toTranslate + "\",\r\"source\": \""
                 + sourceLanguage + "\",\r\"target\": \""
-                + targetlanguage + "\",\r\"format\": \"text\"\r}"));
+                + targetlanguage + "\",\r\"format\": \"text\"\r}");
 
-        HttpRequest translateRequest = requestBuild.build();
+        DOMHttpRequest translateRequest = requestBuild.build();
 
         return translateRequest;
 
     }
     //This Method is for potential future use
-    public List<HttpRequest> buildManyTranslateLanguageHttpRequest(List<String> toTranslate, String sourceLanguage, String targetlanguage){
+    public List<DOMHttpRequest> buildManyTranslateLanguageHttpRequest(List<String> toTranslate, String sourceLanguage, String targetlanguage){
         List<String> formattedToTranslate = formatForHttpRequest(toTranslate);
-        List<HttpRequest> translateRequests = new ArrayList<>();
+        List<DOMHttpRequest> translateRequests = new ArrayList<>();
 
         for (String translate: formattedToTranslate) {
-            HttpRequest translateRequest = buildTranslateLanguageHttpRequest(translate,sourceLanguage,targetlanguage);
+            DOMHttpRequest translateRequest = buildTranslateLanguageHttpRequest(translate,sourceLanguage,targetlanguage);
             translateRequests.add(translateRequest);
         }
         return translateRequests;
     }
-    private HttpRequest.Builder buildHttpRequest(HttpRequestType requestType) {
-        HttpRequest.Builder requestBuild = HttpRequest.newBuilder();
+    private DOMHttpRequestBuilder buildHttpRequest(HttpRequestType requestType) {
+        DOMHttpRequestBuilder requestBuild = new DOMHttpRequestBuilder();
         if (isDetectLanguageRequest(requestType)) {
-            requestBuild.uri(URI.create(URI_DETECT));
+            requestBuild.setUri(URI_DETECT);
         } else {
-            requestBuild.uri(URI.create(URI_TRANSLATE));
+            requestBuild.setUri(URI_TRANSLATE);
         }
-        requestBuild.header(HEADER_CONTENT_NAME, HEADER_CONTENT_VALUE)
-                .header(HEADER_APIKEY_NAME, HEADER_APIKEY_VALUE)
-                .header(HEADER_APIHOST_NAME, HEADER_APIHOST_VALUE);
+        requestBuild.addHeader(HEADER_CONTENT_NAME, HEADER_CONTENT_VALUE);
+        requestBuild.addHeader(HEADER_APIKEY_NAME, HEADER_APIKEY_VALUE);
+        requestBuild.addHeader(HEADER_APIHOST_NAME, HEADER_APIHOST_VALUE);
         return requestBuild;
     }
     private boolean isDetectLanguageRequest(HttpRequestType requestType){

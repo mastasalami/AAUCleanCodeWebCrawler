@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Translator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,31 +21,32 @@ public class HttpParser {
         return parser;
     }
 
-    public String parseDetectResponse(HttpResponse<String> response){
+    public String parseDetectResponse(DOMHttpResponse response){
         return parseHttpResponse(response, JSONOBJECT_DETECTED_KEY);
     }
-    public String parseTranslateResponse(HttpResponse<String> response){
+    public String parseTranslateResponse(DOMHttpResponse response){
         return parseHttpResponse(response, JSONOBJECT_TRANSLATED_KEY);
     }
 
-  private String parseHttpResponse(HttpResponse<String> response, String jsonObjectKey) {
-        JSONArray responseJson = extractJsonArrayFromHttpResponse(response);
+  private String parseHttpResponse(DOMHttpResponse response, String jsonObjectKey) {
+        DOMJSONArray responseJson = extractDOMJsonArrayFromHttpResponse(response);
         StringBuilder parsedResponse = new StringBuilder();
+
         for (int i = 0; i < responseJson.length(); i++) {
-            JSONObject responseObject = responseJson.getJSONObject(i);
+            DOMJSONObject responseObject = responseJson.getDOMJSONObject(i);
             String parsed = responseObject.getString(jsonObjectKey);
             parsedResponse.append(parsed);
         }
-        String parsedString = parsedResponse.toString();
-        return parsedString;
+
+      return parsedResponse.toString();
     }
 
-    private JSONArray extractJsonArrayFromHttpResponse(HttpResponse<String> response) {
+    private DOMJSONArray extractDOMJsonArrayFromHttpResponse(DOMHttpResponse response) {
         String responseBody = response.body();
         //In the HttpResponse of the Google Translate API wraps the JSON Array into something else. It also wraps the JSON array inside
         // another JSON array for detect Requests. That's why I cut off part of the responseBody with lastIndexof('[')
         int jsonArrayStartIndex = responseBody.lastIndexOf('[');
         String extracted = responseBody.substring(jsonArrayStartIndex);
-        return new JSONArray(extracted);
+        return new DOMJSONArray(extracted);
     }
 }

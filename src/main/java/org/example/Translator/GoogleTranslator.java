@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Translator;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -59,22 +59,22 @@ public class GoogleTranslator implements Translator {
         this.toTranslate = toTranslate;
     }
     private String detectSourceLanguage(String toTranslate) throws IOException, InterruptedException {
-        HttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(toTranslate);
-        HttpResponse<String> detectResponse = sendHttpRequest(detectRequest);
+        DOMHttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(toTranslate);
+        DOMHttpResponse detectResponse = sendHttpRequest(detectRequest);
         String detectedLanguage = httpParser.parseDetectResponse(detectResponse);
         return detectedLanguage;
     }
 
     private String doTranslation() throws IOException, InterruptedException {
-        HttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate,this.sourceLanguage,this.targetLanguage);
-        HttpResponse<String> translateResponse = sendHttpRequest(translateRequest);
+        DOMHttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate,this.sourceLanguage,this.targetLanguage);
+        DOMHttpResponse translateResponse = sendHttpRequest(translateRequest);
         String translatedText = httpParser.parseTranslateResponse(translateResponse);
         return translatedText;
     }
 
 
-    private HttpResponse<String> sendHttpRequest(HttpRequest request) throws IOException, InterruptedException {
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+    private DOMHttpResponse sendHttpRequest(DOMHttpRequest request) throws IOException, InterruptedException {
+        DOMHttpResponse response = request.send();
         return response;
     }
 }

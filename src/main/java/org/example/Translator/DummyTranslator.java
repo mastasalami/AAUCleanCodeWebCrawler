@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Translator;
+
+import org.example.Translator;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -7,7 +9,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 //Only used for testing
-public class DummyTranslator implements Translator{
+public class DummyTranslator implements Translator {
     private String sourceLanguage;
     private String targetLanguage;
     private String toTranslate;
