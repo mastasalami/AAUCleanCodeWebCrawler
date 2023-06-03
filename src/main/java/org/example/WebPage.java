@@ -1,7 +1,5 @@
 package org.example;
 
-import org.jsoup.nodes.Document;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +22,9 @@ public class WebPage {
     private final String url;
     private final int depth;
 
-    public WebPage(Document document, String url, int depth) {
+    public WebPage(DOMDocument document, String url, int depth) {
         if (document != null)
-            this.document = new DOMDocument(document);
+            this.document = document;
         this.url = url;
         this.depth = depth;
     }

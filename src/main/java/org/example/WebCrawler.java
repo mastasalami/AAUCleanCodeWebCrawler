@@ -1,7 +1,5 @@
 package org.example;
 
-import org.jsoup.nodes.Document;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +23,7 @@ public class WebCrawler {
         connection.createNewConnection(url);
     }
 
-    private Document getDocumentFromConnection() throws IOException {
+    private DOMDocument getDocumentFromConnection() throws IOException {
         return connection.loadDocument();
     }
 
@@ -56,7 +54,7 @@ public class WebCrawler {
     }
 
     private WebPage getWebPageFromConnection(int depth) throws IOException {
-        Document document = getDocumentFromConnection();
+        DOMDocument document = getDocumentFromConnection();
 
         if (document == null)                                                                                           //This means the call to get the page failed for some reason (Timeout, NoAccess,...)
             return createNotReachableWebPage(depth);
@@ -70,7 +68,7 @@ public class WebCrawler {
         return page;
     }
 
-    private WebPage createReachableWebPage(Document document, int depth) {
+    private WebPage createReachableWebPage(DOMDocument document, int depth) {
         WebPage page = new WebPage(document, connection.getUrl(), depth);
         page.loadElementsFromDocument();
         addWebPageToList(page);
