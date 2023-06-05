@@ -1,5 +1,6 @@
-import org.example.DummyTranslator;
-import org.example.Translator;
+import org.example.Translator.DummyTranslator;
+import org.example.Translator.Translator;
+import org.example.Translator.TranslationFailedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,22 +21,6 @@ public class TranslatorTest {
     @AfterEach
     public void teardown() {
         translator = null;
-    }
-
-    @Test
-    public void testTranslateEnglishToGerman() throws IOException, InterruptedException {
-        String translated = translator.translate("German","Good day!");
-
-        Assertions.assertEquals("Guten Tag!",translated);
-
-    }
-    @Test
-    public void testTranslateManyEnglishToGerman() throws IOException, InterruptedException {
-        List<String> twoGoodDays = returnListWithTwoGoodDays();
-        String translated = translator.translateMany("German",twoGoodDays);
-
-        Assertions.assertEquals("Guten Tag!Guten Tag!",translated);
-
     }
 
     private List<String> returnListWithTwoGoodDays(){

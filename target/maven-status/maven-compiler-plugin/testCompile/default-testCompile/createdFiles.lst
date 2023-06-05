@@ -1,1 +1,13 @@
+HttpParserTest.class
+TranslatorTest.class
+LoggerTest.class
+WebCrawlerThreadTest.class
+LanguageTransformerTest.class
+CrawlerConnectionTest.class
+DOMDocumentTest.class
+HttpParserTest$1.class
+HttpParserTest$2.class
+HttpRequestCreatorTest.class
 SummaryCreatorTest.class
+WebPageTest.class
+WebCrawlerTest.class

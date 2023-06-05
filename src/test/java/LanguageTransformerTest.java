@@ -1,4 +1,4 @@
-import org.example.LanguageTransformer;
+import org.example.Translator.LanguageTransformer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

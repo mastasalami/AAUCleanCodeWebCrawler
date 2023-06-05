@@ -40,7 +40,7 @@ public class WebCrawlerThread implements Callable<String> {
         String headingsTranslated;
         try {
             GoogleTranslator translator = new GoogleTranslator();
-            headingsTranslated = translator.translateMany(language, headings);
+            headingsTranslated = translator.translate(language, headings);
         } catch (TranslationFailedException e) {
             logger.log("Translation failed:" + e);
             headingsTranslated = crawler.getHeadingsText();

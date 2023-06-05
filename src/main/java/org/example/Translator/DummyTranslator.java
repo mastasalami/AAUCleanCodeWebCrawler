@@ -1,40 +1,37 @@
 package org.example.Translator;
 
-import org.example.Translator;
-
-import java.io.IOException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 
 //Only used for testing
 public class DummyTranslator implements Translator {
     private String sourceLanguage;
     private String targetLanguage;
-    private String toTranslate;
-    @Override
-    public String translate(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
-        setUpTranslation(targetLanguage, toTranslate);
-        String translatedText = doTranslation();
-        return translatedText;
-    }
-    @Override
-    public String translateMany(String targetLanguage, List<String> toTranslate) throws IOException, InterruptedException {
-        StringBuilder translatedText = new StringBuilder();
+    private List<String> toTranslate;
 
-        for (String translate: toTranslate) {
-            String translated = translate(targetLanguage, translate);
-            translatedText.append(translated);
-        }
-        return translatedText.toString();
-    }
-
-    private void setUpTranslation(String targetLanguage, String toTranslate) throws IOException, InterruptedException {
+    private void setUpTranslation(String targetLanguage, List<String> toTranslate) {
         setTargetLanguage(targetLanguage);
-        String detectedLanguage = detectSourceLanguage(toTranslate);
+        String detectedLanguage = detectSourceLanguage();
         setSourceLanguage(detectedLanguage);
         setToTranslate(toTranslate);
+    }
+    @Override
+    public String translate(String targetLanguage, List<String> toTranslate) throws TranslationFailedException{
+        setUpTranslation(targetLanguage, toTranslate);
+
+        if (sourceLanguage.equals(targetLanguage)) return toTranslate.toString();
+
+        return doManyTranslation();
+    }
+
+    private String doManyTranslation() throws TranslationFailedException {
+        StringBuilder translatedText = new StringBuilder();
+
+        for (String translate : toTranslate) {
+            String translated = doTranslation(translate);
+            translatedText.append(translated);
+        }
+
+        return translatedText.toString();
     }
 
     private void setTargetLanguage(String targetLanguage){
@@ -44,17 +41,17 @@ public class DummyTranslator implements Translator {
         this.sourceLanguage = sourceLanguage;
     }
 
-    private void setToTranslate(String toTranslate){
+    private void setToTranslate(List<String> toTranslate){
         this.toTranslate = toTranslate;
     }
 
 
-    private String detectSourceLanguage(String toTranslate) throws IOException, InterruptedException {
+    private String detectSourceLanguage() {
         String detectedLanguage = "en";
         return detectedLanguage;
     }
 
-    private String doTranslation() throws IOException, InterruptedException {
+    private String doTranslation(String toTranslate)  {
         String translatedText = "Guten Tag!";
         return translatedText;
     }

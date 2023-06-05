@@ -1,30 +1,30 @@
 package org.example.Translator;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.io.IOException;
 
-import java.net.http.HttpResponse;
-
-public class HttpParser {
-    private static HttpParser parser;
+public class HttpResponseHandler {
+    private static HttpResponseHandler parser;
     final static String JSONOBJECT_DETECTED_KEY = "language";
     final static String JSONOBJECT_TRANSLATED_KEY = "translatedText";
 
-    private HttpParser() {
+    private HttpResponseHandler() {
     }
 
-    public static HttpParser getHttpRequestParser() {
+    public static HttpResponseHandler getHttpRequestParser() {
         if (parser == null) {
-            parser = new HttpParser();
+            parser = new HttpResponseHandler();
         }
 
         return parser;
     }
 
-    public String parseDetectResponse(DOMHttpResponse response) throws TranslationFailedException{
+
+    public String getDetectResponse(DOMHttpRequest request) throws TranslationFailedException{
+        DOMHttpResponse response = sendHttpRequest(request);
         return parseHttpResponse(response, JSONOBJECT_DETECTED_KEY);
     }
-    public String parseTranslateResponse(DOMHttpResponse response) throws TranslationFailedException{
+    public String getTranslateResponse(DOMHttpRequest request) throws TranslationFailedException{
+        DOMHttpResponse response = sendHttpRequest(request);
         return parseHttpResponse(response, JSONOBJECT_TRANSLATED_KEY);
     }
 
@@ -51,6 +51,15 @@ public class HttpParser {
             return new DOMJSONArray(extracted);
         } catch (RuntimeException e){
             throw new TranslationFailedException("The translation api could not process the request because: " + responseBody);
+        }
+    }
+    private DOMHttpResponse sendHttpRequest(DOMHttpRequest request) throws TranslationFailedException {
+        DOMHttpResponse response = null;
+        try {
+            response = request.send();
+            return response;
+        } catch (IOException | InterruptedException e) {
+            throw new TranslationFailedException("An error occured while trying to send a Httprequest to the translation API");
         }
     }
 }

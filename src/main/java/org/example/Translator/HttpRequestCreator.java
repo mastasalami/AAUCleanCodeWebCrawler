@@ -17,7 +17,13 @@ public class HttpRequestCreator {
     private final String HEADER_APIHOST_NAME = "X-RapidAPI-Host";
     private final String HEADER_APIHOST_VALUE = "google-translator9.p.rapidapi.com";
     private final String SEND_DATA = "POST";
-    private final int CHARACTER_LIMIT = 3000;
+    private final int MIN_CHARACTER_LIMIT = 3000;
+
+    private DOMHttpRequestBuilder currentRequestToBuild;
+
+    private List<String> currentToFormat;
+
+    private List<String> formatted;
 
     private enum HttpRequestType {
         DETECTLANGUAGE,
@@ -35,67 +41,97 @@ public class HttpRequestCreator {
 
 
     public DOMHttpRequest buildDetectLanguageHttpRequest(String textExampleOfLanguageToDetect) {
-        DOMHttpRequestBuilder requestBuild = buildHttpRequest(HttpRequestType.DETECTLANGUAGE);
+        buildHttpRequest(HttpRequestType.DETECTLANGUAGE);
+        setMethodForDetectRequest(textExampleOfLanguageToDetect);
 
-        requestBuild.setMethod(SEND_DATA,"{\r\"q\": \""
-                + textExampleOfLanguageToDetect + "\"\r}");
-
-        DOMHttpRequest detectRequest = requestBuild.build();
+        DOMHttpRequest detectRequest = currentRequestToBuild.build();
 
         return detectRequest;
     }
 
     public DOMHttpRequest buildTranslateLanguageHttpRequest(String toTranslate, String sourceLanguage, String targetlanguage) {
-        DOMHttpRequestBuilder requestBuild = buildHttpRequest(HttpRequestType.TRANSLATE);
-        requestBuild.setMethod(SEND_DATA,"{\r\"q\": \""
-                + toTranslate + "\",\r\"source\": \""
-                + sourceLanguage + "\",\r\"target\": \""
-                + targetlanguage + "\",\r\"format\": \"text\"\r}");
+        buildHttpRequest(HttpRequestType.TRANSLATE);
+        
+        setMethodForTranslateRequest(toTranslate, sourceLanguage, targetlanguage);
 
-        DOMHttpRequest translateRequest = requestBuild.build();
+        DOMHttpRequest translateRequest = currentRequestToBuild.build();
 
         return translateRequest;
 
     }
-    //This Method is for potential future use
-    public List<DOMHttpRequest> buildManyTranslateLanguageHttpRequest(List<String> toTranslate, String sourceLanguage, String targetlanguage){
-        List<String> formattedToTranslate = formatForHttpRequest(toTranslate);
-        List<DOMHttpRequest> translateRequests = new ArrayList<>();
+    
+    private void setMethodForDetectRequest(String textExampleOfLanguageToDetect){
+        currentRequestToBuild.setMethod(SEND_DATA,"{\r\"q\": \""
+                + textExampleOfLanguageToDetect + "\"\r}");
+    }
+    
+    private void setMethodForTranslateRequest(String toTranslate, String sourceLanguage, String targetlanguage){
+        currentRequestToBuild.setMethod(SEND_DATA,"{\r\"q\": \""
+                + toTranslate + "\",\r\"source\": \""
+                + sourceLanguage + "\",\r\"target\": \""
+                + targetlanguage + "\",\r\"format\": \"text\"\r}");
+    }
 
-        for (String translate: formattedToTranslate) {
-            DOMHttpRequest translateRequest = buildTranslateLanguageHttpRequest(translate,sourceLanguage,targetlanguage);
-            translateRequests.add(translateRequest);
-        }
-        return translateRequests;
+    private void buildHttpRequest(HttpRequestType requestType) {
+        initCurrentRequestToBuild();
+        setDetectOrTranslateRequestURI(requestType);
+        addHeaders();
     }
-    private DOMHttpRequestBuilder buildHttpRequest(HttpRequestType requestType) {
-        DOMHttpRequestBuilder requestBuild = new DOMHttpRequestBuilder();
+
+    private void initCurrentRequestToBuild(){
+        currentRequestToBuild = new DOMHttpRequestBuilder();
+    }
+
+    private void setDetectOrTranslateRequestURI(HttpRequestType requestType){
         if (isDetectLanguageRequest(requestType)) {
-            requestBuild.setUri(URI_DETECT);
+            currentRequestToBuild.setUri(URI_DETECT);
         } else {
-            requestBuild.setUri(URI_TRANSLATE);
+            currentRequestToBuild.setUri(URI_TRANSLATE);
         }
-        requestBuild.addHeader(HEADER_CONTENT_NAME, HEADER_CONTENT_VALUE);
-        requestBuild.addHeader(HEADER_APIKEY_NAME, HEADER_APIKEY_VALUE);
-        requestBuild.addHeader(HEADER_APIHOST_NAME, HEADER_APIHOST_VALUE);
-        return requestBuild;
     }
+
     private boolean isDetectLanguageRequest(HttpRequestType requestType){
         return HttpRequestType.DETECTLANGUAGE == requestType;
     }
+
+    private void addHeaders(){
+        currentRequestToBuild.addHeader(HEADER_CONTENT_NAME, HEADER_CONTENT_VALUE);
+        currentRequestToBuild.addHeader(HEADER_APIKEY_NAME, HEADER_APIKEY_VALUE);
+        currentRequestToBuild.addHeader(HEADER_APIHOST_NAME, HEADER_APIHOST_VALUE);
+    }
+
     public List<String> formatForHttpRequest(List<String> toFormat){
-        List<String> formattedList = new ArrayList<>();
+        setUpFormat(toFormat);
+
+        format();
+
+        return formatted;
+    }
+
+    private void setUpFormat(List<String> toFormat){
+        currentToFormat = toFormat;
+        formatted = new ArrayList<>();
+    }
+
+    private void format(){
         StringBuilder putTogether = new StringBuilder();
 
-        for (int i = 0; i < toFormat.size(); i++) {
-            String element = toFormat.get(i);
-            putTogether.append(element);
-            if(putTogether.length() > CHARACTER_LIMIT || i == toFormat.size() -1){
-                formattedList.add(putTogether.toString());
-                putTogether = new StringBuilder();
-
+        for (String elementFromList : currentToFormat){
+            putTogether.append(elementFromList);
+            if(hasMinCharacterLimitBeenSurpassed(putTogether.length())){
+                formatted.add(putTogether.toString());
+                putTogether.setLength(0);
             }
         }
-        return formattedList;
+
+       if(!putTogether.isEmpty()) formatted.add(putTogether.toString());
     }
+
+    private boolean hasMinCharacterLimitBeenSurpassed(int length){
+        return length > MIN_CHARACTER_LIMIT;
+    }
+
+
+
+
 }
