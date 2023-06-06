@@ -12,7 +12,7 @@ public class GoogleTranslator implements Translator {
     private final HttpResponseHandler httpResponseHandler;
 
     public GoogleTranslator() {
-        httpRequestCreator = HttpRequestCreator.getHttpRequestCreator();
+        httpRequestCreator = new HttpRequestCreator();
         languageTransformer = LanguageTransformer.getLanguageTransformer();
         httpResponseHandler = HttpResponseHandler.getHttpRequestParser();
     }
@@ -20,16 +20,20 @@ public class GoogleTranslator implements Translator {
     public String translate(String targetLanguage, List<String> toTranslate) throws TranslationFailedException{
         setUpTranslation(targetLanguage, toTranslate);
 
-        if (sourceLanguage.equals(targetLanguage)) return toTranslate.toString();
+        if(isSourceLanguageEqualToTargetLanguage()) return toTranslate.toString();
 
         return doManyTranslation();
+    }
+
+    private boolean isSourceLanguageEqualToTargetLanguage(){
+        return sourceLanguage.equals(targetLanguage);
     }
 
     private String doManyTranslation() throws TranslationFailedException {
         StringBuilder translatedText = new StringBuilder();
 
         for (String translate : toTranslate) {
-           String translated = doTranslation(translate);
+            String translated =  doTranslation(translate);
             translatedText.append(translated);
         }
 
@@ -37,10 +41,9 @@ public class GoogleTranslator implements Translator {
     }
 
     private void setUpTranslation(String targetLanguage, List<String> toTranslate) throws TranslationFailedException {
+        setSourceLanguageToDetectedLanguage(toTranslate.get(0));
         setUpToTranslate(toTranslate);
         setTargetLanguage(targetLanguage);
-        String detectedLanguage = detectSourceLanguage();
-        setSourceLanguage(detectedLanguage);
     }
 
     private void setTargetLanguage(String targetLanguage) {
@@ -56,20 +59,21 @@ public class GoogleTranslator implements Translator {
         this.toTranslate = httpRequestCreator.formatForHttpRequest(toTranslate);
     }
 
-    private String detectSourceLanguage() throws TranslationFailedException {
-        DOMHttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(getTextSampleToDetectLanguage());
+    private String detectSourceLanguage(String textToDetectLanguageFrom) throws TranslationFailedException {
+        DOMHttpRequest detectRequest = httpRequestCreator.buildDetectLanguageHttpRequest(textToDetectLanguageFrom);
         String detectedLanguage = httpResponseHandler.getDetectResponse(detectRequest);
         return detectedLanguage;
+    }
+
+    private void setSourceLanguageToDetectedLanguage(String textToDetectLanguageFrom) throws TranslationFailedException {
+        String detectedLanguage = detectSourceLanguage(textToDetectLanguageFrom);
+        setSourceLanguage(detectedLanguage);
     }
 
     private String doTranslation(String toTranslate) throws TranslationFailedException {
         DOMHttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate, this.sourceLanguage, this.targetLanguage);
         String translatedText = httpResponseHandler.getTranslateResponse(translateRequest);
         return translatedText;
-    }
-
-    private String getTextSampleToDetectLanguage(){
-        return toTranslate.get(0);
     }
 
 }

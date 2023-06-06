@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HttpRequestCreator {
-
-    private static HttpRequestCreator requestCreator;
     private final String URI_TRANSLATE = "https://google-translator9.p.rapidapi.com/v2";
     private final String URI_DETECT = "https://google-translator9.p.rapidapi.com/v2/detect";
     private final String HEADER_CONTENT_NAME = "content-type";
     private final String HEADER_CONTENT_VALUE = "application/json";
     private final String HEADER_APIKEY_NAME = "X-RapidAPI-Key";
-    private final String HEADER_APIKEY_VALUE = "";
+    private final String HEADER_APIKEY_VALUE = "aadb5d6ff7msh13b2cb8721a86c9p18710ajsn2027bc2ca5c9";
     private final String HEADER_APIHOST_NAME = "X-RapidAPI-Host";
     private final String HEADER_APIHOST_VALUE = "google-translator9.p.rapidapi.com";
     private final String SEND_DATA = "POST";
@@ -29,17 +27,6 @@ public class HttpRequestCreator {
         DETECTLANGUAGE,
         TRANSLATE
     }
-
-
-    public static HttpRequestCreator getHttpRequestCreator() {
-        if (requestCreator == null) {
-            requestCreator = new HttpRequestCreator();
-        }
-
-        return requestCreator;
-    }
-
-
     public DOMHttpRequest buildDetectLanguageHttpRequest(String textExampleOfLanguageToDetect) {
         buildHttpRequest(HttpRequestType.DETECTLANGUAGE);
         setMethodForDetectRequest(textExampleOfLanguageToDetect);

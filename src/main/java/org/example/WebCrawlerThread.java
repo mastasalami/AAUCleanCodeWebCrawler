@@ -41,7 +41,7 @@ public class WebCrawlerThread implements Callable<String> {
         try {
             GoogleTranslator translator = new GoogleTranslator();
             headingsTranslated = translator.translate(language, headings);
-        } catch (TranslationFailedException e) {
+        } catch (TranslationFailedException | RuntimeException e) {
             logger.log("Translation failed:" + e);
             headingsTranslated = crawler.getHeadingsText();
         }

@@ -15,7 +15,7 @@ public class HttpRequestCreatorTest {
     HttpRequestCreator httpRequestCreator;
     @BeforeEach
     public void setup(){
-        httpRequestCreator = HttpRequestCreator.getHttpRequestCreator();
+        httpRequestCreator = new HttpRequestCreator();
     }
 
     @AfterEach
