@@ -83,9 +83,22 @@ public class GoogleTranslator implements Translator {
     }
 
     private String doTranslation(String toTranslate) throws TranslationFailedException {
-        DOMHttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate, this.sourceLanguage, this.targetLanguage);
-        String translatedText = httpResponseHandler.getTranslateResponse(translateRequest);
-        return translatedText;
+        try {
+            DOMHttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate, this.sourceLanguage, this.targetLanguage);
+            String translatedText = httpResponseHandler.getTranslateResponse(translateRequest);
+            return translatedText;
+        } catch (TranslationFailedException e){
+            if(checkIfHeadingHaveDifferentLanguage(toTranslate))
+                throw new TranslationFailedException("Translation failed probably due to the fact that the headers" +
+                        "of the crawled website are in multiple languages (the API cannot handle this)");
+            else throw new TranslationFailedException(e.getMessage());
+        }
+    }
+
+    private boolean checkIfHeadingHaveDifferentLanguage(String toTranslate) throws TranslationFailedException {
+        String detectedLanguage = detectSourceLanguage(toTranslate);
+
+        return !detectedLanguage.equals(sourceLanguage);
     }
 
     public String getTextFromFailedTranslation(){
