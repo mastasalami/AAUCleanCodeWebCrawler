@@ -31,20 +31,32 @@ public class GoogleTranslator implements Translator {
 
     private String doManyTranslation() throws TranslationFailedException {
         StringBuilder translatedText = new StringBuilder();
+        int index = 0;
 
         for (String translate : toTranslate) {
             String translated =  doTranslation(translate);
             translatedText.append(translated);
+            toTranslate.set(index,translated);
+            index++;
         }
 
         return translatedText.toString();
     }
 
     private void setUpTranslation(String targetLanguage, List<String> toTranslate) throws TranslationFailedException {
-        setSourceLanguageToDetectedLanguage(toTranslate.get(0));
+        setSourceLanguageToDetectedLanguage(getTextSample(toTranslate));
         setUpToTranslate(toTranslate);
         setTargetLanguage(targetLanguage);
     }
+
+    private String getTextSample(List<String> toTranslate) throws TranslationFailedException{
+            for (String elementFromToTranslate : toTranslate) {
+                if (!elementFromToTranslate.isEmpty()) return elementFromToTranslate;
+            }
+
+            throw new TranslationFailedException("Text that should be translated cannot be empty!");
+    }
+
 
     private void setTargetLanguage(String targetLanguage) {
         String languageCode = languageTransformer.getLanguageCode(targetLanguage);
@@ -74,6 +86,16 @@ public class GoogleTranslator implements Translator {
         DOMHttpRequest translateRequest = httpRequestCreator.buildTranslateLanguageHttpRequest(toTranslate, this.sourceLanguage, this.targetLanguage);
         String translatedText = httpResponseHandler.getTranslateResponse(translateRequest);
         return translatedText;
+    }
+
+    public String getTextFromFailedTranslation(){
+        StringBuilder textFromToTranslate = new StringBuilder();
+
+        for (String toTranslateElement: toTranslate) {
+            textFromToTranslate.append(toTranslateElement);
+        }
+
+        return textFromToTranslate.toString();
     }
 
 }

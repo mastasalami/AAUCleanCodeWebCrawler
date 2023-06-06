@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: HttpRequestCreatorTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in HttpRequestCreatorTest
+Tests run: 3, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.01 s <<< FAILURE! - in HttpRequestCreatorTest
+createOneTranslateRequest  Time elapsed: 0.007 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: < { {content-type=[application/json], X-RapidAPI-Host=[google-translator9.p.rapidapi.com], X-RapidAPI-Key=[]} }> but was: < { {content-type=[application/json], X-RapidAPI-Host=[google-translator9.p.rapidapi.com], X-RapidAPI-Key=[aadb5d6ff7msh13b2cb8721a86c9p18710ajsn2027bc2ca5c9]} }>
+	at HttpRequestCreatorTest.createOneTranslateRequest(HttpRequestCreatorTest.java:39)
+
+createOneDetectRequest  Time elapsed: 0.001 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: < { {content-type=[application/json], X-RapidAPI-Host=[google-translator9.p.rapidapi.com], X-RapidAPI-Key=[]} }> but was: < { {content-type=[application/json], X-RapidAPI-Host=[google-translator9.p.rapidapi.com], X-RapidAPI-Key=[aadb5d6ff7msh13b2cb8721a86c9p18710ajsn2027bc2ca5c9]} }>
+	at HttpRequestCreatorTest.createOneDetectRequest(HttpRequestCreatorTest.java:56)
+
