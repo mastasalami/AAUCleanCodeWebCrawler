@@ -70,7 +70,7 @@ public class HttpRequestCreatorTest {
         HttpRequest translateRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://google-translator9.p.rapidapi.com/v2"))
                 .header("content-type", "application/json")
-                .header("X-RapidAPI-Key", "")
+                .header("X-RapidAPI-Key", "aadb5d6ff7msh13b2cb8721a86c9p18710ajsn2027bc2ca5c9")
                 .header("X-RapidAPI-Host", "google-translator9.p.rapidapi.com")
                 .method("POST", HttpRequest.BodyPublishers.ofString("{\r" +
                         "\"q\": \"Test\",\r" +
@@ -87,7 +87,7 @@ public class HttpRequestCreatorTest {
         HttpRequest detectRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://google-translator9.p.rapidapi.com/v2/detect"))
                 .header("content-type", "application/json")
-                .header("X-RapidAPI-Key", "")
+                .header("X-RapidAPI-Key", "aadb5d6ff7msh13b2cb8721a86c9p18710ajsn2027bc2ca5c9")
                 .header("X-RapidAPI-Host", "google-translator9.p.rapidapi.com")
                 .method("POST", HttpRequest.BodyPublishers.ofString("{\r\"" +
                         "q\": \"Guten Tag!\"\r" +

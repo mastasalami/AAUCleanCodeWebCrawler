@@ -44,8 +44,8 @@ public class GoogleTranslator implements Translator {
     }
 
     private void setUpTranslation(String targetLanguage, List<String> toTranslate) throws TranslationFailedException {
-        setSourceLanguageToDetectedLanguage(getTextSample(toTranslate));
         setUpToTranslate(toTranslate);
+        setSourceLanguageToDetectedLanguage(getTextSample(toTranslate));
         setTargetLanguage(targetLanguage);
     }
 
