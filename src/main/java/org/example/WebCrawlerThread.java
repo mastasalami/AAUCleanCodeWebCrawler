@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.Translator.GoogleTranslator;
+import org.example.Translator.TranslationFailedException;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -35,12 +38,12 @@ public class WebCrawlerThread implements Callable<String> {
     //Todo: Improve Error handling from translation (maybe different messages per exception type)
     private String translateHeadings(List<String> headings) {
         String headingsTranslated;
+        GoogleTranslator translator = new GoogleTranslator();
         try {
-            GoogleTranslator translator = new GoogleTranslator();
-            headingsTranslated = translator.translateMany(language, headings);
-        } catch (IOException | InterruptedException | RuntimeException e) {
+            headingsTranslated = translator.translate(language, headings);
+        } catch (TranslationFailedException | RuntimeException e) {
             logger.log("Translation failed:" + e);
-            headingsTranslated = crawler.getHeadingsText();
+            headingsTranslated = translator.getTextFromFailedTranslation();
         }
         return headingsTranslated;
     }

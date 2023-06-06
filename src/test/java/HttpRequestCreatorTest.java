@@ -1,5 +1,5 @@
-import org.example.HttpParser;
-import org.example.HttpRequestCreator;
+import org.example.Translator.DOMHttpRequest;
+import org.example.Translator.HttpRequestCreator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,16 +8,14 @@ import org.junit.jupiter.api.Test;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.URI;
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class HttpRequestCreatorTest {
     HttpRequestCreator httpRequestCreator;
     @BeforeEach
     public void setup(){
-        httpRequestCreator = HttpRequestCreator.getHttpRequestCreator();
+        httpRequestCreator = new HttpRequestCreator();
     }
 
     @AfterEach
@@ -27,7 +25,7 @@ public class HttpRequestCreatorTest {
 
     @Test
     public void createOneTranslateRequest(){
-        HttpRequest translateRequestCreator;
+        DOMHttpRequest translateRequestCreator;
         translateRequestCreator = httpRequestCreator.buildTranslateLanguageHttpRequest("Test","en","de");
 
         HttpRequest translateRequestNormal = normalHttpRequestCreationTranslate();
@@ -44,7 +42,7 @@ public class HttpRequestCreatorTest {
 
     @Test
     public void createOneDetectRequest(){
-        HttpRequest detectRequestCreator;
+        DOMHttpRequest detectRequestCreator;
         detectRequestCreator = httpRequestCreator.buildDetectLanguageHttpRequest("Guten Tag!");
 
         HttpRequest detectRequestNormal = normalHttpRequestCreationDetect();
@@ -72,7 +70,7 @@ public class HttpRequestCreatorTest {
         HttpRequest translateRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://google-translator9.p.rapidapi.com/v2"))
                 .header("content-type", "application/json")
-                .header("X-RapidAPI-Key", "1f5de7c1b6mshc346a13cd58af05p1a5df0jsne027c8bfa2cc")
+                .header("X-RapidAPI-Key", "aadb5d6ff7msh13b2cb8721a86c9p18710ajsn2027bc2ca5c9")
                 .header("X-RapidAPI-Host", "google-translator9.p.rapidapi.com")
                 .method("POST", HttpRequest.BodyPublishers.ofString("{\r" +
                         "\"q\": \"Test\",\r" +
@@ -89,7 +87,7 @@ public class HttpRequestCreatorTest {
         HttpRequest detectRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://google-translator9.p.rapidapi.com/v2/detect"))
                 .header("content-type", "application/json")
-                .header("X-RapidAPI-Key", "1f5de7c1b6mshc346a13cd58af05p1a5df0jsne027c8bfa2cc")
+                .header("X-RapidAPI-Key", "aadb5d6ff7msh13b2cb8721a86c9p18710ajsn2027bc2ca5c9")
                 .header("X-RapidAPI-Host", "google-translator9.p.rapidapi.com")
                 .method("POST", HttpRequest.BodyPublishers.ofString("{\r\"" +
                         "q\": \"Guten Tag!\"\r" +

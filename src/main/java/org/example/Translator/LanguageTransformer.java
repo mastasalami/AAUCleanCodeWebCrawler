@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Translator;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,16 +30,17 @@ public class LanguageTransformer {
 
     private static HashMap<String,String> googleLanguagesAndCodes;
     private LanguageTransformer(){
-
+        initializeHashmap();
     }
 
     public static LanguageTransformer getLanguageTransformer(){
-        if(languageTransformer == null){
-            languageTransformer = new LanguageTransformer();
-            initializeHashmap();
-        }
-        return languageTransformer;
+        return LanguageTransformerHolder.languageTransformer;
     }
+
+    private static class LanguageTransformerHolder{
+        private static final LanguageTransformer languageTransformer = new LanguageTransformer();
+    }
+
     private static void initializeHashmap(){
         googleLanguagesAndCodes = new HashMap<>();
         for (int i = 0; i < googleLanguages.size(); i++) {

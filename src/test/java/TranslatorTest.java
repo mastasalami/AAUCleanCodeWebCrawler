@@ -1,5 +1,6 @@
-import org.example.DummyTranslator;
-import org.example.Translator;
+import org.example.Translator.DummyTranslator;
+import org.example.Translator.Translator;
+import org.example.Translator.TranslationFailedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,21 +24,18 @@ public class TranslatorTest {
     }
 
     @Test
-    public void testTranslateEnglishToGerman() throws IOException, InterruptedException {
-        String translated = translator.translate("German","Good day!");
+    void translateTwoGoodDaysFromEnglishToGerman() throws TranslationFailedException {
+      String translated =  translator.translate("de", returnListWithTwoGoodDays());
 
-        Assertions.assertEquals("Guten Tag!",translated);
-
+      Assertions.assertEquals("Guten Tag!Guten Tag!", translated);
     }
+
     @Test
-    public void testTranslateManyEnglishToGerman() throws IOException, InterruptedException {
-        List<String> twoGoodDays = returnListWithTwoGoodDays();
-        String translated = translator.translateMany("German",twoGoodDays);
+    void tryTranslationWithSameSourceAndTargetLanguageExpectNoTranslationOnInput() throws TranslationFailedException {
+        String translated =  translator.translate("en", returnListWithTwoGoodDays());
 
-        Assertions.assertEquals("Guten Tag!Guten Tag!",translated);
-
+        Assertions.assertEquals("Good day!Good day!", translated);
     }
-
     private List<String> returnListWithTwoGoodDays(){
         List<String> twoGoodDays = new ArrayList<>();
         twoGoodDays.add("Good day!");

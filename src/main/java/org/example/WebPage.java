@@ -110,6 +110,8 @@ public class WebPage {
     public String getElementText(DOMElement el) {
         String elementText = "";
 
+        if(isElementEmpty(el)) return elementText;
+
         if (el.getName().contains(HEADING_HTML_ELEMENT_NAME))
             elementText += getIndentationForHeadingLevel(el);
 
@@ -123,6 +125,17 @@ public class WebPage {
         elementText += LINE_BREAK_SYMBOL;
 
         return elementText;
+    }
+
+    private boolean isElementEmpty(DOMElement el){
+        String elementText = "";
+
+        if (el.getName().contains(HEADING_HTML_ELEMENT_NAME))
+            elementText += el.getText();
+        else
+            elementText += el.getAttribute(LINK_ATTRIBUTE);
+
+        return elementText.isEmpty();
     }
 
     private String getIndentationForDepth() {
