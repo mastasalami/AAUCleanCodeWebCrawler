@@ -20,7 +20,7 @@ public class GoogleTranslator implements Translator {
     public String translate(String targetLanguage, List<String> toTranslate) throws TranslationFailedException{
         setUpTranslation(targetLanguage, toTranslate);
 
-        if(isSourceLanguageEqualToTargetLanguage()) return toTranslate.toString();
+        if(isSourceLanguageEqualToTargetLanguage()) return getTextFromFailedTranslation();
 
         return doManyTranslation();
     }

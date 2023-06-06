@@ -14,6 +14,7 @@ org\example\Translator\TranslationFailedException.class
 org\example\WebCrawler.class
 org\example\DOMDocument.class
 org\example\Translator\LanguageTransformer$LanguageTransformerHolder.class
+org\example\Translator\DummyHttpResponseHandler.class
 org\example\SummaryCreator.class
 org\example\Translator\HttpResponseHandler.class
 org\example\Translator\GoogleTranslator.class

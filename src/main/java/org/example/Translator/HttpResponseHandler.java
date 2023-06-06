@@ -6,7 +6,7 @@ public class HttpResponseHandler {
     private static HttpResponseHandler parser;
     final static int sleepTime = 500;
 
-    private HttpResponseHandler() {
+    protected HttpResponseHandler() {
     }
 
    public enum JSON_KEY{
@@ -19,9 +19,6 @@ public class HttpResponseHandler {
            this.getJSONKey = jsonKey;
        }
    }
-
-
-
 
     public static HttpResponseHandler getHttpRequestParser() {
         return HttpResponseHandlerHolder.httpResponseHandler;
@@ -41,7 +38,7 @@ public class HttpResponseHandler {
         return parseHttpResponse(response, JSON_KEY.JSONOBJECT_TRANSLATED_KEY);
     }
 
-  private String parseHttpResponse(DOMHttpResponse response, JSON_KEY jsonKey) throws TranslationFailedException{
+  protected String parseHttpResponse(DOMHttpResponse response, JSON_KEY jsonKey) throws TranslationFailedException{
         DOMJSONArray responseJson = extractDOMJsonArrayFromHttpResponse(response, jsonKey);
         StringBuilder parsedResponse = new StringBuilder();
 

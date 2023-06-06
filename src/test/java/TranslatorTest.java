@@ -23,6 +23,19 @@ public class TranslatorTest {
         translator = null;
     }
 
+    @Test
+    void translateTwoGoodDaysFromEnglishToGerman() throws TranslationFailedException {
+      String translated =  translator.translate("de", returnListWithTwoGoodDays());
+
+      Assertions.assertEquals("Guten Tag!Guten Tag!", translated);
+    }
+
+    @Test
+    void tryTranslationWithSameSourceAndTargetLanguageExpectNoTranslationOnInput() throws TranslationFailedException {
+        String translated =  translator.translate("en", returnListWithTwoGoodDays());
+
+        Assertions.assertEquals("Good day!Good day!", translated);
+    }
     private List<String> returnListWithTwoGoodDays(){
         List<String> twoGoodDays = new ArrayList<>();
         twoGoodDays.add("Good day!");

@@ -2,7 +2,7 @@ package org.example.Translator;
 
 import java.util.List;
 
-//Only used for testing
+//Dummy class that is used to kind of test the methods of GoogleTranslator Class without having to use the API or other Classes
 public class DummyTranslator implements Translator {
     private String sourceLanguage;
     private String targetLanguage;
@@ -18,12 +18,12 @@ public class DummyTranslator implements Translator {
     public String translate(String targetLanguage, List<String> toTranslate) throws TranslationFailedException{
         setUpTranslation(targetLanguage, toTranslate);
 
-        if (sourceLanguage.equals(targetLanguage)) return toTranslate.toString();
+        if (sourceLanguage.equals(targetLanguage)) return getTextFromFailedTranslation();
 
         return doManyTranslation();
     }
 
-    private String doManyTranslation() throws TranslationFailedException {
+    private String doManyTranslation() {
         StringBuilder translatedText = new StringBuilder();
 
         for (String translate : toTranslate) {
@@ -34,8 +34,8 @@ public class DummyTranslator implements Translator {
         return translatedText.toString();
     }
 
-    private void setTargetLanguage(String targetLanguage){
-        this.targetLanguage = "de";
+    public void setTargetLanguage(String targetLanguage){
+        this.targetLanguage = targetLanguage;
     }
     private void setSourceLanguage(String sourceLanguage){
         this.sourceLanguage = sourceLanguage;
@@ -54,5 +54,15 @@ public class DummyTranslator implements Translator {
     private String doTranslation(String toTranslate)  {
         String translatedText = "Guten Tag!";
         return translatedText;
+    }
+
+    public String getTextFromFailedTranslation(){
+        StringBuilder textFromToTranslate = new StringBuilder();
+
+        for (String toTranslateElement: toTranslate) {
+            textFromToTranslate.append(toTranslateElement);
+        }
+
+        return textFromToTranslate.toString();
     }
 }
